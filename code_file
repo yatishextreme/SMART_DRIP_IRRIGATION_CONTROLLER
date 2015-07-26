@@ -1,0 +1,2251 @@
+from Tkinter import *
+import time
+import os
+import pickle
+import tkFileDialog
+from tkFileDialog import *
+import datetime
+import math
+from datetime import *
+
+   
+# COMPLETD ALL THE FUNCTIONS REQUIRED DECLATIONS 
+
+root = Tk()
+root.geometry('1300x600')
+root.resizable(TRUE,TRUE)
+root.title("DRIP IRRIGATION CONTROLLER")
+root.configure(background = '#a6a6a6')
+
+def getSec1(s): #hh:mm to seconds
+    l = s.split(':')
+    return int(l[0]) * 3600 + int(l[1]) * 60 
+
+
+
+def getSec(s):    #hh:mm:ss to seconds
+    l = s.split(':')
+    return int(l[0]) * 3600 + int(l[1]) * 60 + int(l[2])
+def donothing():
+   print("do nothing")
+
+def quitfn():
+   print("exit")
+   quit()
+
+def exitbutton():
+    print ("exit")
+    quit()
+
+def runbutton():
+    print ("run code")
+
+def slot2fun():
+    print("code for slot2")
+    
+    
+def slot3fun():
+    print("code for slot1")
+def slot4fun():
+    print("code for slot1")
+def slot5fun():
+    print("code for slot1")
+    
+    
+def checkprogram():
+    
+    def totaltime(x1):
+        def getSec1(s):
+            l = s.split(':')
+            return int(l[0]) * 3600 + int(l[1]) * 60 
+        def getSec(s):
+            l = s.split(':')
+            return int(l[0]) * 3600 + int(l[1]) * 60 + int(l[2])
+        def cyclevalues(totalsec,vsec):
+            venturion=vsec                         #total venturi on cycle in sec
+            venturioff=totalsec-vsec                #total venturi on cycle in sec
+            venturioncycle=math.floor(venturion/2)  # to get cycle dive by sec in 2 sec 
+            venturioffcycle=math.ceil(venturioff/2) # to get cycle dive by sec in 2 sec 
+            if (vsec!=totalsec):
+                if (venturioncycle>=venturioffcycle):
+                    no_cycles=(math.floor(venturioncycle/venturioffcycle))
+                    cycletype='oncycles and equal'
+                elif (venturioncycle<venturioffcycle):
+                    no_cycles=(math.ceil(venturioffcycle/venturioncycle))
+                    cycletype='offcycles'
+            else :
+                no_cycles=0                    
+                cycletype='complete on'
+                  
+            return (no_cycles,cycletype)  
+            
+            
+            #main code for totaltime starts here
+        cstarttime=datetime.strptime(x1[1],"%H:%M")+timedelta(seconds=getSec1(x1[3]))
+        cstarttime=str(datetime.time(cstarttime))
+        cstoptime=datetime.strptime(x1[2],"%H:%M")-datetime.strptime(x1[4],"%H:%M")
+        cstoptime=str(cstoptime)
+        k1=cstarttime[0:8]
+        k2=cstoptime[0:8]
+        dt=datetime.strptime(k2,"%H:%M:%S")-datetime.strptime(k1,"%H:%M:%S")
+        dt=str(dt)
+        totalsec=getSec(dt)
+        vd1sec=getSec1(x1[5])
+        vd2sec=getSec1(x1[6])
+        vd3sec=getSec1(x1[7])
+        (vd1nocycles,vd1cycletype)=cyclevalues(totalsec,vd1sec)
+        (vd2nocycles,vd2cycletype)=cyclevalues(totalsec,vd2sec)
+        (vd3nocycles,vd3cycletype)=cyclevalues(totalsec,vd3sec)
+        return (dt,vd1nocycles,vd1cycletype,vd2nocycles,vd2cycletype,vd3nocycles,vd3cycletype)
+    def slot1fun():
+    
+        f=open('/home/yatish/Desktop/spe_workspace/softwarefiles/temporary.txt','rb')
+        x1=pickle.load(f)
+        x2=pickle.load(f)
+        x3=pickle.load(f)
+        x4=pickle.load(f)
+        x5=pickle.load(f)
+        x6=pickle.load(f)
+        f.close()
+        print("slot1")
+        starttimeentry.configure(text=x1[1])
+        stoptimeentry.configure(text=x1[2])
+        pretimeentry.configure(text=x1[3])
+        posttimeentry.configure(text=x1[4])
+        (dt,vd1nocycles,vd1cycletypes,vd2nocycles,vd2cycletypes,vd3nocycles,vd3cycletypes)=totaltime(x1)
+        totalirrentry.configure(text=dt)
+        totalsec=getSec(dt)
+        vd1sec=getSec1(x1[5])
+        vd2sec=getSec1(x1[6])
+        vd3sec=getSec1(x1[7])
+        pumpsno.configure(text="2000")
+        nocycles.configure(text="2000")
+        totalvolume.configure(text="2000")
+        vd1duration.configure(text=x1[5])
+        vd2duration.configure(text=x1[6])
+        vd3duration.configure(text=x1[7])
+        vd1cycle.configure(text=vd1nocycles)
+        vd2cycle.configure(text=vd2nocycles)
+        vd3cycle.configure(text=vd3nocycles)
+        vd1cycletype.configure(text=vd1cycletypes)
+        vd2cycletype.configure(text=vd2cycletypes)
+        vd3cycletype.configure(text=vd3cycletypes)
+        v1status.configure(text="2000")
+        v2status.configure(text="2000")
+        v3status.configure(text="2000")
+        v4status.configure(text="2000")
+        v5status.configure(text="2000")
+        v6status.configure(text="2000")
+        v7status.configure(text="2000")
+        v8status.configure(text="2000")
+        v9status.configure(text="2000")
+        v10status.configure(text="2000")
+        
+        pnameentry.configure(text=x6[0])
+        
+    def slot2fun():
+    
+        f=open('/home/yatish/Desktop/spe_workspace/softwarefiles/temporary.txt','rb')
+        x1=pickle.load(f)
+        x2=pickle.load(f)
+        x3=pickle.load(f)
+        x4=pickle.load(f)
+        x5=pickle.load(f)
+        x6=pickle.load(f)
+        f.close()
+        print("slot2")
+        starttimeentry.configure(text=x2[1])
+        stoptimeentry.configure(text=x2[2])
+        pretimeentry.configure(text=x2[3])
+        posttimeentry.configure(text=x2[4])
+        (dt,vd1nocycles,vd1cycletypes,vd2nocycles,vd2cycletypes,vd3nocycles,vd3cycletypes)=totaltime(x2)
+        totalirrentry.configure(text=dt)
+        totalsec=getSec(dt)
+        vd1sec=getSec1(x2[5])
+        vd2sec=getSec1(x2[6])
+        vd3sec=getSec1(x2[7])
+        pumpsno.configure(text="2000")
+        nocycles.configure(text="2000")
+        totalvolume.configure(text="2000")
+        vd1duration.configure(text=x2[5])
+        vd2duration.configure(text=x2[6])
+        vd3duration.configure(text=x2[7])
+        vd1cycle.configure(text=vd1nocycles)
+        vd2cycle.configure(text=vd2nocycles)
+        vd3cycle.configure(text=vd3nocycles)
+        vd1cycletype.configure(text=vd1cycletypes)
+        vd2cycletype.configure(text=vd2cycletypes)
+        vd3cycletype.configure(text=vd3cycletypes)
+        v1status.configure(text="2000")
+        v2status.configure(text="2000")
+        v3status.configure(text="2000")
+        v4status.configure(text="2000")
+        v5status.configure(text="2000")
+        v6status.configure(text="2000")
+        v7status.configure(text="2000")
+        v8status.configure(text="2000")
+        v9status.configure(text="2000")
+        v10status.configure(text="2000")
+        
+        pnameentry.configure(text=x6[0])
+        
+    def slot3fun():
+    
+        f=open('/home/yatish/Desktop/spe_workspace/softwarefiles/temporary.txt','rb')
+        x1=pickle.load(f)
+        x2=pickle.load(f)
+        x3=pickle.load(f)
+        x4=pickle.load(f)
+        x5=pickle.load(f)
+        x6=pickle.load(f)
+        f.close()
+        print("slot3")
+        starttimeentry.configure(text=x3[1])
+        stoptimeentry.configure(text=x3[2])
+        pretimeentry.configure(text=x3[3])
+        posttimeentry.configure(text=x3[4])
+        (dt,vd1nocycles,vd1cycletypes,vd2nocycles,vd2cycletypes,vd3nocycles,vd3cycletypes)=totaltime(x3)
+        totalirrentry.configure(text=dt)
+        totalsec=getSec(dt)
+        vd1sec=getSec1(x3[5])
+        vd2sec=getSec1(x3[6])
+        vd3sec=getSec1(x3[7])
+        pumpsno.configure(text="2000")
+        nocycles.configure(text="2000")
+        totalvolume.configure(text="2000")
+        vd1duration.configure(text=x3[5])
+        vd2duration.configure(text=x3[6])
+        vd3duration.configure(text=x3[7])
+        vd1cycle.configure(text=vd1nocycles)
+        vd2cycle.configure(text=vd2nocycles)
+        vd3cycle.configure(text=vd3nocycles)
+        vd1cycletype.configure(text=vd1cycletypes)
+        vd2cycletype.configure(text=vd2cycletypes)
+        vd3cycletype.configure(text=vd3cycletypes)
+        v1status.configure(text="2000")
+        v2status.configure(text="2000")
+        v3status.configure(text="2000")
+        v4status.configure(text="2000")
+        v5status.configure(text="2000")
+        v6status.configure(text="2000")
+        v7status.configure(text="2000")
+        v8status.configure(text="2000")
+        v9status.configure(text="2000")
+        v10status.configure(text="2000")
+        
+        pnameentry.configure(text=x6[0])
+        
+    
+    def slot4fun():
+    
+        f=open('/home/yatish/Desktop/spe_workspace/softwarefiles/temporary.txt','rb')
+        x1=pickle.load(f)
+        x2=pickle.load(f)
+        x3=pickle.load(f)
+        x4=pickle.load(f)
+        x5=pickle.load(f)
+        x6=pickle.load(f)
+        f.close()
+        print("slot4")
+        starttimeentry.configure(text=x4[1])
+        stoptimeentry.configure(text=x4[2])
+        pretimeentry.configure(text=x4[3])
+        posttimeentry.configure(text=x4[4])
+        (dt,vd1nocycles,vd1cycletypes,vd2nocycles,vd2cycletypes,vd3nocycles,vd3cycletypes)=totaltime(x4)
+        totalirrentry.configure(text=dt)
+        totalsec=getSec(dt)
+        vd1sec=getSec1(x4[5])
+        vd2sec=getSec1(x4[6])
+        vd3sec=getSec1(x4[7])
+        pumpsno.configure(text="2000")
+        nocycles.configure(text="2000")
+        totalvolume.configure(text="2000")
+        vd1duration.configure(text=x4[5])
+        vd2duration.configure(text=x4[6])
+        vd3duration.configure(text=x4[7])
+        vd1cycle.configure(text=vd1nocycles)
+        vd2cycle.configure(text=vd2nocycles)
+        vd3cycle.configure(text=vd3nocycles)
+        vd1cycletype.configure(text=vd1cycletypes)
+        vd2cycletype.configure(text=vd2cycletypes)
+        vd3cycletype.configure(text=vd3cycletypes)
+        v1status.configure(text="2000")
+        v2status.configure(text="2000")
+        v3status.configure(text="2000")
+        v4status.configure(text="2000")
+        v5status.configure(text="2000")
+        v6status.configure(text="2000")
+        v7status.configure(text="2000")
+        v8status.configure(text="2000")
+        v9status.configure(text="2000")
+        v10status.configure(text="2000")
+        
+        pnameentry.configure(text=x6[0])
+    
+    def slot5fun():
+
+        f=open('/home/yatish/Desktop/spe_workspace/softwarefiles/temporary.txt','rb')
+        x1=pickle.load(f)
+        x2=pickle.load(f)
+        x3=pickle.load(f)
+        x4=pickle.load(f)
+        x5=pickle.load(f)
+        x6=pickle.load(f)
+        f.close()
+        print("slot5")
+        starttimeentry.configure(text=x5[1])
+        stoptimeentry.configure(text=x5[2])
+        pretimeentry.configure(text=x5[3])
+        posttimeentry.configure(text=x5[4])
+        (dt,vd1nocycles,vd1cycletypes,vd2nocycles,vd2cycletypes,vd3nocycles,vd3cycletypes)=totaltime(x5)
+        totalirrentry.configure(text=dt)
+        totalsec=getSec(dt)
+        vd1sec=getSec1(x5[5])
+        vd2sec=getSec1(x5[6])
+        vd3sec=getSec1(x5[7])
+        pumpsno.configure(text="2000")
+        nocycles.configure(text="2000")
+        totalvolume.configure(text="2000")
+        vd1duration.configure(text=x5[5])
+        vd2duration.configure(text=x5[6])
+        vd3duration.configure(text=x5[7])
+        vd1cycle.configure(text=vd1nocycles)
+        vd2cycle.configure(text=vd2nocycles)
+        vd3cycle.configure(text=vd3nocycles)
+        vd1cycletype.configure(text=vd1cycletypes)
+        vd2cycletype.configure(text=vd2cycletypes)
+        vd3cycletype.configure(text=vd3cycletypes)
+        v1status.configure(text="2000")
+        v2status.configure(text="2000")
+        v3status.configure(text="2000")
+        v4status.configure(text="2000")
+        v5status.configure(text="2000")
+        v6status.configure(text="2000")
+        v7status.configure(text="2000")
+        v8status.configure(text="2000")
+        v9status.configure(text="2000")
+        v10status.configure(text="2000")
+        
+        pnameentry.configure(text=x6[0])
+    
+    slot1list=[slot1_name.get(),slot1main_start.get(),slot1main_stop.get(),slot1_pre.get(),slot1_post.get(),slot1_vd1.get(),slot1_vd2.get(),slot1_vd3.get(),slot1_vd4.get(),
+                slot1_vd5.get(),slot1_vd6.get(),slot1_vd7.get(),slot1_vd8.get(),
+                slot1_vd9.get(),slot1_priorityno.get(),vslot1_1.get(),vslot1_2.get(),
+                vslot1_3.get(),vslot1_4.get(),vslot1_5.get(),vslot1_6.get(),vslot1_7.get(),
+                vslot1_8.get(),vslot1_9.get(),vslot1_10.get(),vslot1_11.get(),vslot1_12.get(),
+                vslot1_13.get(),vslot1_14.get(),vslot1_15.get(),vslot1_16.get(),vslot1_17.get(),
+                vslot1_18.get(),vslot1_19.get(),vslot1_20.get(),vslot1_21.get(),vslot1_22.get(),vslot1_23.get(),
+                vslot1_24.get(),vslot1_25.get(),vslot1_26.get(),vslot1_27.get(),vslot1_28.get(),vslot1_29.get(),vslot1_30.get()]
+   
+    slot2list=[slot2_name.get(),slot2main_start.get(),slot2main_stop.get(),slot2_pre.get(),slot2_post.get(),slot2_vd1.get(),slot2_vd2.get(),slot2_vd3.get(),slot2_vd4.get(),
+                slot2_vd5.get(),slot2_vd6.get(),slot2_vd7.get(),slot2_vd8.get(),
+                slot2_vd9.get(),slot2_priorityno.get(),vslot2_1.get(),vslot2_2.get(),
+                vslot2_3.get(),vslot2_4.get(),vslot2_5.get(),vslot2_6.get(),vslot2_7.get(),
+                vslot2_8.get(),vslot2_9.get(),vslot2_10.get(),vslot2_11.get(),vslot2_12.get(),
+                vslot2_13.get(),vslot2_14.get(),vslot2_15.get(),vslot2_16.get(),vslot2_17.get(),
+                vslot2_18.get(),vslot2_19.get(),vslot2_20.get(),vslot2_21.get(),vslot2_22.get(),vslot2_23.get(),
+                vslot2_24.get(),vslot2_25.get(),vslot2_26.get(),vslot2_27.get(),vslot2_28.get(),vslot2_29.get(),vslot2_30.get()]
+
+    slot3list=[slot3_name.get(),slot3main_start.get(),slot3main_stop.get(),slot3_pre.get(),slot3_post.get(),slot3_vd1.get(),slot3_vd2.get(),slot3_vd3.get(),slot3_vd4.get(),
+                slot3_vd5.get(),slot3_vd6.get(),slot3_vd7.get(),slot3_vd8.get(),
+                slot3_vd9.get(),slot3_priorityno.get(),vslot3_1.get(),vslot3_2.get(),
+                vslot3_3.get(),vslot3_4.get(),vslot3_5.get(),vslot3_6.get(),vslot3_7.get(),
+                vslot3_8.get(),vslot3_9.get(),vslot3_10.get(),vslot3_11.get(),vslot3_12.get(),
+                vslot3_13.get(),vslot3_14.get(),vslot3_15.get(),vslot3_16.get(),vslot3_17.get(),
+                vslot3_18.get(),vslot3_19.get(),vslot3_20.get(),vslot3_21.get(),vslot3_22.get(),vslot3_23.get(),
+                vslot3_24.get(),vslot3_25.get(),vslot3_26.get(),vslot3_27.get(),vslot3_28.get(),vslot3_29.get(),vslot3_30.get()]
+
+    slot4list=[slot4_name.get(),slot4main_start.get(),slot4main_stop.get(),slot4_pre.get(),slot4_post.get(),slot4_vd1.get(),slot4_vd2.get(),slot4_vd3.get(),slot4_vd4.get(),
+                slot4_vd5.get(),slot4_vd6.get(),slot4_vd7.get(),slot4_vd8.get(),
+                slot4_vd9.get(),slot4_priorityno.get(),vslot4_1.get(),vslot4_2.get(),
+                vslot4_3.get(),vslot4_4.get(),vslot4_5.get(),vslot4_6.get(),vslot4_7.get(),
+                vslot4_8.get(),vslot4_9.get(),vslot4_10.get(),vslot4_11.get(),vslot4_12.get(),
+                vslot4_13.get(),vslot4_14.get(),vslot4_15.get(),vslot4_16.get(),vslot4_17.get(),
+                vslot4_18.get(),vslot4_19.get(),vslot4_20.get(),vslot4_21.get(),vslot4_22.get(),vslot4_23.get(),
+                vslot4_24.get(),vslot4_25.get(),vslot4_26.get(),vslot4_27.get(),vslot4_28.get(),vslot4_29.get(),vslot4_30.get()]
+
+    slot5list=[slot5_name.get(),slot5main_start.get(),slot5main_stop.get(),slot5_pre.get(),slot5_post.get(),slot5_vd1.get(),slot5_vd2.get(),slot5_vd3.get(),slot5_vd4.get(),
+                slot5_vd5.get(),slot5_vd6.get(),slot5_vd7.get(),slot5_vd8.get(),
+                slot5_vd9.get(),slot5_priorityno.get(),vslot5_1.get(),vslot5_2.get(),
+                vslot5_3.get(),vslot5_4.get(),vslot5_5.get(),vslot5_6.get(),vslot5_7.get(),
+                vslot5_8.get(),vslot5_9.get(),vslot5_10.get(),vslot5_11.get(),vslot5_12.get(),
+                vslot5_13.get(),vslot5_14.get(),vslot5_15.get(),vslot5_16.get(),vslot5_17.get(),
+                vslot5_18.get(),vslot5_19.get(),vslot5_20.get(),vslot5_21.get(),vslot5_22.get(),vslot5_23.get(),
+                vslot5_24.get(),vslot5_25.get(),vslot5_26.get(),vslot5_27.get(),vslot5_28.get(),vslot5_29.get(),vslot5_30.get()]
+    
+    programname=program_name.get()    
+    f=open('/home/yatish/Desktop/spe_workspace/softwarefiles/temporary.txt','wb')
+    pickle.dump(slot1list,f)
+    pickle.dump(slot2list,f)
+    pickle.dump(slot3list,f)
+    pickle.dump(slot4list,f)
+    pickle.dump(slot5list,f)
+    pickle.dump(programname,f)
+    f.close()
+    root2=Tk()
+    root2.geometry('1020x650')
+    root2.title("CHECK PAGE")
+    root2.configure(background = '#a6a6a6')
+    root2.resizable(FALSE,FALSE)
+    Label(root2,text="PROGRAM NAME",background='gray',borderwidth=2,relief=RIDGE).place(x=300,y=10,width=120,height=25)
+    pnameentry=Label(root2,text="",width=100)
+    pnameentry.place(x=420,y=10,width=120,height=25)
+    
+
+    Button(root2,text="SLOT1",width=100,height=40,command=slot1fun).place(x=10,y=60,width=100,height=30)
+    Button(root2,text="SLOT2",width=100,height=40,command=slot2fun).place(x=110,y=60,width=100,height=30)
+    Button(root2,text="SLOT3",width=100,height=40,command=slot3fun).place(x=210,y=60,width=100,height=30)
+    Button(root2,text="SLOT4",width=100,height=40,command=slot4fun).place(x=310,y=60,width=100,height=30)
+    Button(root2,text="SLOT5",width=100,height=40,command=slot5fun).place(x=410,y=60,width=100,height=30)
+
+    programnamelabel = LabelFrame(root2, text="", background='gray')
+    programnamelabel.place(x=10,y=90,width=1000,height=140)
+    
+    Label(root2,text="SLOT NAME",background='gray',borderwidth=2,relief=RIDGE).place(x=20,y=110,width=100,height=25)
+    Label(root2,text="START TIME",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=110,width=100,height=25)
+    Label(root2,text="STOP TIME",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=135,width=100,height=25)
+    Label(root2,text="PRE TIME",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=160,width=100,height=25)
+    Label(root2,text="POST TIME",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=185,width=100,height=25)
+    slotnameentry=Label(root2,text="",width=100)
+    slotnameentry.place(x=20,y=135,width=100,height=25)
+    starttimeentry=Label(root2,text="",width=100)
+    starttimeentry.place(x=225,y=110,width=120,height=25)
+    stoptimeentry=Label(root2,text="",width=100)
+    stoptimeentry.place(x=225,y=135,width=120,height=25)
+    pretimeentry=Label(root2,text="",width=100)
+    pretimeentry.place(x=225,y=160,width=120,height=25)
+    posttimeentry=Label(root2,text="",width=100)
+    posttimeentry.place(x=225,y=185,width=120,height=25)
+
+
+    
+    Label(root2,text="TOTAL IRRIGATION TIME",background='gray',borderwidth=2,relief=GROOVE).place(x=525,y=110,width=200,height=25)
+    Label(root2,text="PUMPS TO BE USED",background='gray',borderwidth=2,relief=GROOVE).place(x=525,y=135,width=200,height=25)
+    Label(root2,text="NO CYCLES",background='gray',borderwidth=2,relief=GROOVE).place(x=525,y=160,width=200,height=25)
+    Label(root2,text="TOTAL WATER VOLUME",background='gray',borderwidth=2,relief=GROOVE).place(x=525,y=185,width=200,height=25)
+    totalirrentry=Label(root2,text="",width=100)
+    totalirrentry.place(x=725,y=110,width=120,height=25)
+   
+    pumpsno=Label(root2,text="",width=100)
+    pumpsno.place(x=725,y=135,width=120,height=25)
+      
+    nocycles=Label(root2,text="",width=100)
+    nocycles.place(x=725,y=160,width=120,height=25)
+  
+    totalvolume=Label(root2,text="",width=100)
+    totalvolume.place(x=725,y=185,width=120,height=25)
+    venturi = LabelFrame(root2,background='gray')
+    venturi.place(x=10, y=230,width=1000,height=100)
+    Label(root2,text="VD1 DURATION",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=240,width=100,height=25)
+    Label(root2,text="VD2 DURATION",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=265,width=100,height=25)
+    Label(root2,text="VD3 DURATION",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=290,width=100,height=25)
+    
+    vd1duration=Label(root2,text="",background='gray',width=100)
+    vd1duration.place(x=225,y=240,width=120,height=25)
+    vd2duration=Label(root2,text="",background='gray',width=100)
+    vd2duration.place(x=225,y=265,width=120,height=25)
+    vd3duration=Label(root2,text="",background='gray',width=100)
+    vd3duration.place(x=225,y=290,width=120,height=25)
+
+    
+
+
+    Label(root2,text="VD1 CYCLES",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=240,width=100,height=25)
+    Label(root2,text="VD2 CYCLES",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=265,width=100,height=25)
+    Label(root2,text="VD3 CYCLES",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=290,width=100,height=25)
+    
+    vd1cycle=Label(root2,background='gray',width=100)
+    vd1cycle.place(x=625,y=240,width=120,height=25)
+    vd2cycle=Label(root2,background='gray',width=100)
+    vd2cycle.place(x=625,y=265,width=120,height=25)
+    vd3cycle=Label(root2,background='gray',width=100)
+    vd3cycle.place(x=625,y=290,width=120,height=25)
+    
+    vd1cycletype=Label(root2,background='gray',width=100)
+    vd1cycletype.place(x=745,y=240,width=120,height=25)
+    vd2cycletype=Label(root2,background='gray',width=100)
+    vd2cycletype.place(x=745,y=265,width=120,height=25)
+    vd3cycletype=Label(root2,background='gray',width=100)
+    vd3cycletype.place(x=745,y=290,width=120,height=25) 
+ 
+    valves = LabelFrame(root2,background='gray')
+    valves.place(x=10, y=330,width=1000,height=140)
+
+
+    
+
+    Label(root2,text="V1",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=340,width=100,height=25)
+    Label(root2,text="V2",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=365,width=100,height=25)
+    Label(root2,text="V3",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=390,width=100,height=25)
+    Label(root2,text="V4",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=415,width=100,height=25)
+    Label(root2,text="V5",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=440,width=100,height=25)
+   
+    v1status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v1status.place(x=225,y=340,width=100,height=25)
+    v2status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v2status.place(x=225,y=365,width=100,height=25)
+    v3status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v3status.place(x=225,y=390,width=100,height=25)
+    v4status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v4status.place(x=225,y=415,width=100,height=25)
+    v5status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v5status.place(x=225,y=440,width=100,height=25)
+
+
+    Label(root2,text="V6",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=340,width=100,height=25)
+    Label(root2,text="V7",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=365,width=100,height=25)
+    Label(root2,text="V8",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=390,width=100,height=25)
+    Label(root2,text="V9",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=415,width=100,height=25)
+    Label(root2,text="V10",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=440,width=100,height=25)
+    v6status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v6status.place(x=625,y=340,width=100,height=25)
+    v7status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v7status.place(x=625,y=365,width=100,height=25)
+    v8status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v8status.place(x=625,y=390,width=100,height=25)
+    v9status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v9status.place(x=625,y=415,width=100,height=25)
+    v10status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v10status.place(x=625,y=440,width=100,height=25)
+
+    errors = LabelFrame(root2,background='gray')
+    errors.place(x=10, y=470,width=1000,height=100)
+    Label(root2,text="ERROR BOX",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=480,width=100,height=25)
+    errorbox=Text(root2)
+    errorbox.place(x=225,y=480,width=400,height=70)
+
+    Button(root2,text="EXIT",width=100,height=40,command=exitbutton).place(x=700,y=590,width=100,height=40)
+    Button(root2,text="RUN",width=100,height=40,command=runbutton).place(x=500,y=590,width=100,height=40)
+    root2.mainloop()
+ 
+    #main program of checkprogram starts here
+    slot1list=[slot1_name.get(),slot1main_start.get(),slot1main_stop.get(),slot1_pre.get(),slot1_post.get(),slot1_vd1.get(),slot1_vd2.get(),slot1_vd3.get(),slot1_vd4.get(),
+                slot1_vd5.get(),slot1_vd6.get(),slot1_vd7.get(),slot1_vd8.get(),
+                slot1_vd9.get(),slot1_priorityno.get(),vslot1_1.get(),vslot1_2.get(),
+                vslot1_3.get(),vslot1_4.get(),vslot1_5.get(),vslot1_6.get(),vslot1_7.get(),
+                vslot1_8.get(),vslot1_9.get(),vslot1_10.get(),vslot1_11.get(),vslot1_12.get(),
+                vslot1_13.get(),vslot1_14.get(),vslot1_15.get(),vslot1_16.get(),vslot1_17.get(),
+                vslot1_18.get(),vslot1_19.get(),vslot1_20.get(),vslot1_21.get(),vslot1_22.get(),vslot1_23.get(),
+                vslot1_24.get(),vslot1_25.get(),vslot1_26.get(),vslot1_27.get(),vslot1_28.get(),vslot1_29.get(),vslot1_30.get()]
+   
+    slot2list=[slot2_name.get(),slot2main_start.get(),slot2main_stop.get(),slot2_pre.get(),slot2_post.get(),slot2_vd1.get(),slot2_vd2.get(),slot2_vd3.get(),slot2_vd4.get(),
+                slot2_vd5.get(),slot2_vd6.get(),slot2_vd7.get(),slot2_vd8.get(),
+                slot2_vd9.get(),slot2_priorityno.get(),vslot2_1.get(),vslot2_2.get(),
+                vslot2_3.get(),vslot2_4.get(),vslot2_5.get(),vslot2_6.get(),vslot2_7.get(),
+                vslot2_8.get(),vslot2_9.get(),vslot2_10.get(),vslot2_11.get(),vslot2_12.get(),
+                vslot2_13.get(),vslot2_14.get(),vslot2_15.get(),vslot2_16.get(),vslot2_17.get(),
+                vslot2_18.get(),vslot2_19.get(),vslot2_20.get(),vslot2_21.get(),vslot2_22.get(),vslot2_23.get(),
+                vslot2_24.get(),vslot2_25.get(),vslot2_26.get(),vslot2_27.get(),vslot2_28.get(),vslot2_29.get(),vslot2_30.get()]
+
+    slot3list=[slot3_name.get(),slot3main_start.get(),slot3main_stop.get(),slot3_pre.get(),slot3_post.get(),slot3_vd1.get(),slot3_vd2.get(),slot3_vd3.get(),slot3_vd4.get(),
+                slot3_vd5.get(),slot3_vd6.get(),slot3_vd7.get(),slot3_vd8.get(),
+                slot3_vd9.get(),slot3_priorityno.get(),vslot3_1.get(),vslot3_2.get(),
+                vslot3_3.get(),vslot3_4.get(),vslot3_5.get(),vslot3_6.get(),vslot3_7.get(),
+                vslot3_8.get(),vslot3_9.get(),vslot3_10.get(),vslot3_11.get(),vslot3_12.get(),
+                vslot3_13.get(),vslot3_14.get(),vslot3_15.get(),vslot3_16.get(),vslot3_17.get(),
+                vslot3_18.get(),vslot3_19.get(),vslot3_20.get(),vslot3_21.get(),vslot3_22.get(),vslot3_23.get(),
+                vslot3_24.get(),vslot3_25.get(),vslot3_26.get(),vslot3_27.get(),vslot3_28.get(),vslot3_29.get(),vslot3_30.get()]
+
+    slot4list=[slot4_name.get(),slot4main_start.get(),slot4main_stop.get(),slot4_pre.get(),slot4_post.get(),slot4_vd1.get(),slot4_vd2.get(),slot4_vd3.get(),slot4_vd4.get(),
+                slot4_vd5.get(),slot4_vd6.get(),slot4_vd7.get(),slot4_vd8.get(),
+                slot4_vd9.get(),slot4_priorityno.get(),vslot4_1.get(),vslot4_2.get(),
+                vslot4_3.get(),vslot4_4.get(),vslot4_5.get(),vslot4_6.get(),vslot4_7.get(),
+                vslot4_8.get(),vslot4_9.get(),vslot4_10.get(),vslot4_11.get(),vslot4_12.get(),
+                vslot4_13.get(),vslot4_14.get(),vslot4_15.get(),vslot4_16.get(),vslot4_17.get(),
+                vslot4_18.get(),vslot4_19.get(),vslot4_20.get(),vslot4_21.get(),vslot4_22.get(),vslot4_23.get(),
+                vslot4_24.get(),vslot4_25.get(),vslot4_26.get(),vslot4_27.get(),vslot4_28.get(),vslot4_29.get(),vslot4_30.get()]
+
+    slot5list=[slot5_name.get(),slot5main_start.get(),slot5main_stop.get(),slot5_pre.get(),slot5_post.get(),slot5_vd1.get(),slot5_vd2.get(),slot5_vd3.get(),slot5_vd4.get(),
+                slot5_vd5.get(),slot5_vd6.get(),slot5_vd7.get(),slot5_vd8.get(),
+                slot5_vd9.get(),slot5_priorityno.get(),vslot5_1.get(),vslot5_2.get(),
+                vslot5_3.get(),vslot5_4.get(),vslot5_5.get(),vslot5_6.get(),vslot5_7.get(),
+                vslot5_8.get(),vslot5_9.get(),vslot5_10.get(),vslot5_11.get(),vslot5_12.get(),
+                vslot5_13.get(),vslot5_14.get(),vslot5_15.get(),vslot5_16.get(),vslot5_17.get(),
+                vslot5_18.get(),vslot5_19.get(),vslot5_20.get(),vslot5_21.get(),vslot5_22.get(),vslot5_23.get(),
+                vslot5_24.get(),vslot5_25.get(),vslot5_26.get(),vslot5_27.get(),vslot5_28.get(),vslot5_29.get(),vslot5_30.get()]
+    
+    programname=program_name.get()    
+    f=open('/home/yatish/Desktop/spe_workspace/softwarefiles/temporary.txt','wb')
+    pickle.dump(slot1list,f)
+    pickle.dump(slot2list,f)
+    pickle.dump(slot3list,f)
+    pickle.dump(slot4list,f)
+    pickle.dump(slot5list,f)
+    pickle.dump(programname,f)
+    f.close()
+    
+    root2=Tk()
+    root2.geometry('1020x650')
+    root2.title("CHECK PAGE")
+    root2.configure(background = '#a6a6a6')
+    root2.resizable(FALSE,FALSE)
+    Label(root2,text="PROGRAM NAME",background='gray',borderwidth=2,relief=RIDGE).place(x=300,y=10,width=120,height=25)
+    pnameentry=Label(root2,text="",width=100)
+    pnameentry.place(x=420,y=10,width=120,height=25)
+    
+
+    Button(root2,text="SLOT1",width=100,height=40,command=slot1fun).place(x=10,y=60,width=100,height=30)
+    Button(root2,text="SLOT2",width=100,height=40,command=slot2fun).place(x=110,y=60,width=100,height=30)
+    Button(root2,text="SLOT3",width=100,height=40,command=slot3fun).place(x=210,y=60,width=100,height=30)
+    Button(root2,text="SLOT4",width=100,height=40,command=slot4fun).place(x=310,y=60,width=100,height=30)
+    Button(root2,text="SLOT5",width=100,height=40,command=slot5fun).place(x=410,y=60,width=100,height=30)
+
+    programnamelabel = LabelFrame(root2, text="", background='gray')
+    programnamelabel.place(x=10,y=90,width=1000,height=140)
+    
+    
+    
+    Label(root2,text="SLOT NAME",background='gray',borderwidth=2,relief=RIDGE).place(x=20,y=110,width=100,height=25)
+    Label(root2,text="START TIME",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=110,width=100,height=25)
+    Label(root2,text="STOP TIME",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=135,width=100,height=25)
+    Label(root2,text="PRE TIME",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=160,width=100,height=25)
+    Label(root2,text="POST TIME",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=185,width=100,height=25)
+    slotnameentry=Label(root2,text="",width=100)
+    slotnameentry.place(x=20,y=135,width=100,height=25)
+    starttimeentry=Label(root2,text="",width=100)
+    starttimeentry.place(x=225,y=110,width=120,height=25)
+    stoptimeentry=Label(root2,text="",width=100)
+    stoptimeentry.place(x=225,y=135,width=120,height=25)
+    pretimeentry=Label(root2,text="",width=100)
+    pretimeentry.place(x=225,y=160,width=120,height=25)
+    posttimeentry=Label(root2,text="",width=100)
+    posttimeentry.place(x=225,y=185,width=120,height=25)
+
+    Label(root2,text="TOTAL IRRIGATION TIME",background='gray',borderwidth=2,relief=GROOVE).place(x=525,y=110,width=200,height=25)
+    Label(root2,text="PUMPS TO BE USED",background='gray',borderwidth=2,relief=GROOVE).place(x=525,y=135,width=200,height=25)
+    Label(root2,text="NO CYCLES",background='gray',borderwidth=2,relief=GROOVE).place(x=525,y=160,width=200,height=25)
+    Label(root2,text="TOTAL WATER VOLUME",background='gray',borderwidth=2,relief=GROOVE).place(x=525,y=185,width=200,height=25)
+    totalirrentry=Label(root2,text="",width=100)
+    totalirrentry.place(x=725,y=110,width=120,height=25)
+    
+    pumpsno=Label(root2,text="",width=100)
+    pumpsno.place(x=725,y=135,width=120,height=25)
+    
+    nocycles=Label(root2,text="",width=100)
+    nocycles.place(x=725,y=160,width=120,height=25)
+    
+    totalvolume=Label(root2,text="",width=100)
+    totalvolume.place(x=725,y=185,width=120,height=25)
+    venturi = LabelFrame(root2,background='gray')
+    venturi.place(x=10, y=230,width=1000,height=100)
+    Label(root2,text="VD1 DURATION",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=240,width=100,height=25)
+    Label(root2,text="VD2 DURATION",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=265,width=100,height=25)
+    Label(root2,text="VD3 DURATION",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=290,width=100,height=25)
+    vd1duration=Label(root2,text="",background='gray',width=100)
+    vd1duration.place(x=225,y=240,width=120,height=25)
+    vd2duration=Label(root2,text="",background='gray',width=100)
+    vd2duration.place(x=225,y=265,width=120,height=25)
+    vd3duration=Label(root2,text="",background='gray',width=100)
+    vd3duration.place(x=225,y=290,width=120,height=25)
+    Label(root2,text="VD1 CYCLES",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=240,width=100,height=25)
+    Label(root2,text="VD2 CYCLES",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=265,width=100,height=25)
+    Label(root2,text="VD3 CYCLES",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=290,width=100,height=25)
+    vd1cycle=Label(root2,background='gray',width=100)
+    vd1cycle.place(x=625,y=240,width=120,height=25)
+    vd2cycle=Label(root2,background='gray',width=100)
+    vd2cycle.place(x=625,y=265,width=120,height=25)
+    vd3cycle=Label(root2,background='gray',width=100)
+    vd3cycle.place(x=625,y=290,width=120,height=25)
+    
+    vd1cycletype=Label(root2,background='gray',width=100)
+    vd1cycletype.place(x=745,y=240,width=120,height=25)
+    vd2cycletype=Label(root2,background='gray',width=100)
+    vd2cycletype.place(x=745,y=265,width=120,height=25)
+    vd3cycletype=Label(root2,background='gray',width=100)
+    vd3cycletype.place(x=745,y=290,width=120,height=25)
+    
+    valves = LabelFrame(root2,background='gray')
+    valves.place(x=10, y=330,width=1000,height=140)
+    Label(root2,text="V1",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=340,width=100,height=25)
+    Label(root2,text="V2",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=365,width=100,height=25)
+    Label(root2,text="V3",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=390,width=100,height=25)
+    Label(root2,text="V4",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=415,width=100,height=25)
+    Label(root2,text="V5",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=440,width=100,height=25)
+    v1status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v1status.place(x=225,y=340,width=100,height=25)
+    v2status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v2status.place(x=225,y=365,width=100,height=25)
+    v3status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v3status.place(x=225,y=390,width=100,height=25)
+    v4status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v4status.place(x=225,y=415,width=100,height=25)
+    v5status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v5status.place(x=225,y=440,width=100,height=25)
+
+    Label(root2,text="V6",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=340,width=100,height=25)
+    Label(root2,text="V7",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=365,width=100,height=25)
+    Label(root2,text="V8",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=390,width=100,height=25)
+    Label(root2,text="V9",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=415,width=100,height=25)
+    Label(root2,text="V10",background='gray',borderwidth=2,relief=RIDGE).place(x=525,y=440,width=100,height=25)
+    v6status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v6status.place(x=625,y=340,width=100,height=25)
+    v7status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v7status.place(x=625,y=365,width=100,height=25)
+    v8status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v8status.place(x=625,y=390,width=100,height=25)
+    v9status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v9status.place(x=625,y=415,width=100,height=25)
+    v10status=Label(root2,background='gray',borderwidth=2,relief=RIDGE)
+    v10status.place(x=625,y=440,width=100,height=25)
+    errors = LabelFrame(root2,background='gray')
+    errors.place(x=10, y=470,width=1000,height=100)
+    Label(root2,text="ERROR BOX",background='gray',borderwidth=2,relief=RIDGE).place(x=125,y=480,width=100,height=25)
+    errorbox=Text(root2)
+    errorbox.place(x=225,y=480,width=400,height=70)
+    Button(root2,text="EXIT",width=100,height=40,command=exitbutton).place(x=700,y=590,width=100,height=40)
+    Button(root2,text="RUN",width=100,height=40,command=runbutton).place(x=500,y=590,width=100,height=40)
+    root2.mainloop()
+
+def loadprogram():
+   print(" code for load complete program including all slots")
+
+   myfiletypes = [('Program files', '*.txt')]
+   filename=askopenfilename(filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/programs',title='Load the Program')
+   f=open(filename,'rb')
+   x1=pickle.load(f)
+   print(x1)
+   (slot1_name.set(x1[0]),slot1main_start.set(x1[1]),slot1main_stop.set(x1[2]),slot1_pre.set(x1[3]),slot1_post.set(x1[4]),slot1_vd1.set(x1[5]),slot1_vd2.set(x1[6]),slot1_vd3.set(x1[7]),slot1_vd4.set(x1[8]),
+            slot1_vd5.set(x1[9]),slot1_vd6.set(x1[10]),slot1_vd7.set(x1[11]),slot1_vd8.set(x1[12]),
+            slot1_vd9.set(x1[13]),slot1_priorityno.set(x1[14]),vslot1_1.set(x1[15]),vslot1_2.set(x1[16]),
+            vslot1_3.set(x1[17]),vslot1_4.set(x1[18]),vslot1_5.set(x1[19]),vslot1_6.set(x1[20]),vslot1_7.set(x1[21]),
+            vslot1_8.set(x1[22]),vslot1_9.set(x1[23]),vslot1_10.set(x1[24]),vslot1_11.set(x1[25]),vslot1_12.set(x1[26]),
+            vslot1_13.set(x1[27]),vslot1_14.set(x1[28]),vslot1_15.set(x1[29]),vslot1_16.set(x1[30]),vslot1_17.set(x1[31]),
+            vslot1_18.set(x1[32]),vslot1_19.set(x1[33]),vslot1_20.set(x1[34]),vslot1_21.set(x1[35]),vslot1_22.set(x1[36]),vslot1_23.set(x1[37]),
+            vslot1_24.set(x1[38]),vslot1_25.set(x1[39]),vslot1_26.set(x1[40]),vslot1_27.set(x1[41]),vslot1_28.set(x1[42]),vslot1_29.set(x1[43]),vslot1_30.set(x1[44]))
+
+   x2=pickle.load(f)
+   print(x2)
+   (slot2_name.set(x2[0]),slot2main_start.set(x2[1]),slot2main_stop.set(x2[2]),slot2_pre.set(x2[3]),slot2_post.set(x2[4]),slot2_vd1.set(x2[5]),slot2_vd2.set(x2[6]),slot2_vd3.set(x2[7]),slot2_vd4.set(x2[8]),
+            slot2_vd5.set(x2[9]),slot2_vd6.set(x2[10]),slot2_vd7.set(x2[11]),slot2_vd8.set(x2[12]),
+            slot2_vd9.set(x2[13]),slot2_priorityno.set(x2[14]),vslot2_1.set(x2[15]),vslot2_2.set(x2[16]),
+            vslot2_3.set(x2[17]),vslot2_4.set(x2[18]),vslot2_5.set(x2[19]),vslot2_6.set(x2[20]),vslot2_7.set(x2[21]),
+            vslot2_8.set(x2[22]),vslot2_9.set(x2[23]),vslot2_10.set(x2[24]),vslot2_11.set(x2[25]),vslot2_12.set(x2[26]),
+            vslot2_13.set(x2[27]),vslot2_14.set(x2[28]),vslot2_15.set(x2[29]),vslot2_16.set(x2[30]),vslot2_17.set(x2[31]),
+            vslot2_18.set(x2[32]),vslot2_19.set(x2[33]),vslot2_20.set(x2[34]),vslot2_21.set(x2[35]),vslot2_22.set(x2[36]),vslot2_23.set(x2[37]),
+            vslot2_24.set(x2[38]),vslot2_25.set(x2[39]),vslot2_26.set(x2[40]),vslot2_27.set(x2[41]),vslot2_28.set(x2[42]),vslot2_29.set(x2[43]),vslot2_30.set(x2[44]))
+        
+
+   x3=pickle.load(f)
+   print(x3)
+   (slot3_name.set(x3[0]),slot3main_start.set(x3[1]),slot3main_stop.set(x3[2]),slot3_pre.set(x3[3]),slot3_post.set(x3[4]),slot3_vd1.set(x3[5]),slot3_vd2.set(x3[6]),slot3_vd3.set(x3[7]),slot3_vd4.set(x3[8]),
+            slot3_vd5.set(x3[9]),slot3_vd6.set(x3[10]),slot3_vd7.set(x3[11]),slot3_vd8.set(x3[12]),
+            slot3_vd9.set(x3[13]),slot3_priorityno.set(x3[14]),vslot3_1.set(x3[15]),vslot3_2.set(x3[16]),
+            vslot3_3.set(x3[17]),vslot3_4.set(x3[18]),vslot3_5.set(x3[19]),vslot3_6.set(x3[20]),vslot3_7.set(x3[21]),
+            vslot3_8.set(x3[22]),vslot3_9.set(x3[23]),vslot3_10.set(x3[24]),vslot3_11.set(x3[25]),vslot3_12.set(x3[26]),
+            vslot3_13.set(x3[27]),vslot3_14.set(x3[28]),vslot3_15.set(x3[29]),vslot3_16.set(x3[30]),vslot3_17.set(x3[31]),
+            vslot3_18.set(x3[32]),vslot3_19.set(x3[33]),vslot3_20.set(x3[34]),vslot3_21.set(x3[35]),vslot3_22.set(x3[36]),vslot3_23.set(x3[37]),
+            vslot3_24.set(x3[38]),vslot3_25.set(x3[39]),vslot3_26.set(x3[40]),vslot3_27.set(x3[41]),vslot3_28.set(x3[42]),vslot3_29.set(x3[43]),vslot3_30.set(x3[44]))
+        
+
+   x4=pickle.load(f)
+   print(x4)
+   (slot4_name.set(x4[0]),slot4main_start.set(x4[1]),slot4main_stop.set(x4[2]),slot4_pre.set(x4[3]),slot4_post.set(x4[4]),slot4_vd1.set(x4[5]),slot4_vd2.set(x4[6]),slot4_vd3.set(x4[7]),slot4_vd4.set(x4[8]),
+            slot4_vd5.set(x4[9]),slot4_vd6.set(x4[10]),slot4_vd7.set(x4[11]),slot4_vd8.set(x4[12]),
+            slot4_vd9.set(x4[13]),slot4_priorityno.set(x4[14]),vslot4_1.set(x4[15]),vslot4_2.set(x4[16]),
+            vslot4_3.set(x4[17]),vslot4_4.set(x4[18]),vslot4_5.set(x4[19]),vslot4_6.set(x4[20]),vslot4_7.set(x4[21]),
+            vslot4_8.set(x4[22]),vslot4_9.set(x4[23]),vslot4_10.set(x4[24]),vslot4_11.set(x4[25]),vslot4_12.set(x4[26]),
+            vslot4_13.set(x4[27]),vslot4_14.set(x4[28]),vslot4_15.set(x4[29]),vslot4_16.set(x4[30]),vslot4_17.set(x4[31]),
+            vslot4_18.set(x4[32]),vslot4_19.set(x4[33]),vslot4_20.set(x4[34]),vslot4_21.set(x4[35]),vslot4_22.set(x4[36]),vslot4_23.set(x4[37]),
+            vslot4_24.set(x4[38]),vslot4_25.set(x4[39]),vslot4_26.set(x4[40]),vslot4_27.set(x4[41]),vslot4_28.set(x4[42]),vslot4_29.set(x4[43]),vslot4_30.set(x4[44]))
+        
+
+   x5=pickle.load(f)
+   print(x5)
+   (slot5_name.set(x5[0]),slot5main_start.set(x5[1]),slot5main_stop.set(x5[2]),slot5_pre.set(x5[3]),slot5_post.set(x5[4]),slot5_vd1.set(x5[5]),slot5_vd2.set(x5[6]),slot5_vd3.set(x5[7]),slot5_vd4.set(x5[8]),
+            slot5_vd5.set(x5[9]),slot5_vd6.set(x5[10]),slot5_vd7.set(x5[11]),slot5_vd8.set(x5[12]),
+            slot5_vd9.set(x5[13]),slot5_priorityno.set(x5[14]),vslot5_1.set(x5[15]),vslot5_2.set(x5[16]),
+            vslot5_3.set(x5[17]),vslot5_4.set(x5[18]),vslot5_5.set(x5[19]),vslot5_6.set(x5[20]),vslot5_7.set(x5[21]),
+            vslot5_8.set(x5[22]),vslot5_9.set(x5[23]),vslot5_10.set(x5[24]),vslot5_11.set(x5[25]),vslot5_12.set(x5[26]),
+            vslot5_13.set(x5[27]),vslot5_14.set(x5[28]),vslot5_15.set(x5[29]),vslot5_16.set(x5[30]),vslot5_17.set(x5[31]),
+            vslot5_18.set(x5[32]),vslot5_19.set(x5[33]),vslot5_20.set(x5[34]),vslot5_21.set(x5[35]),vslot5_22.set(x5[36]),vslot5_23.set(x5[37]),
+            vslot5_24.set(x5[38]),vslot5_25.set(x5[39]),vslot5_26.set(x5[40]),vslot5_27.set(x5[41]),vslot5_28.set(x5[42]),vslot5_29.set(x5[43]),vslot5_30.set(x5[44]))
+        
+   x6=pickle.load(f)
+   program_name.set(x6)
+   f.close()
+
+def saveprogram():
+   print(" code for save complete program including all slots ")
+   myfiletypes = [('program files', '*.txt')]
+   filename=asksaveasfilename(initialfile=program_name.get(),filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/programs',title='Save the program')
+   slot1list=[slot1_name.get(),slot1main_start.get(),slot1main_stop.get(),slot1_pre.get(),slot1_post.get(),slot1_vd1.get(),slot1_vd2.get(),slot1_vd3.get(),slot1_vd4.get(),
+                slot1_vd5.get(),slot1_vd6.get(),slot1_vd7.get(),slot1_vd8.get(),
+                slot1_vd9.get(),slot1_priorityno.get(),vslot1_1.get(),vslot1_2.get(),
+                vslot1_3.get(),vslot1_4.get(),vslot1_5.get(),vslot1_6.get(),vslot1_7.get(),
+                vslot1_8.get(),vslot1_9.get(),vslot1_10.get(),vslot1_11.get(),vslot1_12.get(),
+                vslot1_13.get(),vslot1_14.get(),vslot1_15.get(),vslot1_16.get(),vslot1_17.get(),
+                vslot1_18.get(),vslot1_19.get(),vslot1_20.get(),vslot1_21.get(),vslot1_22.get(),vslot1_23.get(),
+                vslot1_24.get(),vslot1_25.get(),vslot1_26.get(),vslot1_27.get(),vslot1_28.get(),vslot1_29.get(),vslot1_30.get()]
+   
+   slot2list=[slot2_name.get(),slot2main_start.get(),slot2main_stop.get(),slot2_pre.get(),slot2_post.get(),slot2_vd1.get(),slot2_vd2.get(),slot2_vd3.get(),slot2_vd4.get(),
+                slot2_vd5.get(),slot2_vd6.get(),slot2_vd7.get(),slot2_vd8.get(),
+                slot2_vd9.get(),slot2_priorityno.get(),vslot2_1.get(),vslot2_2.get(),
+                vslot2_3.get(),vslot2_4.get(),vslot2_5.get(),vslot2_6.get(),vslot2_7.get(),
+                vslot2_8.get(),vslot2_9.get(),vslot2_10.get(),vslot2_11.get(),vslot2_12.get(),
+                vslot2_13.get(),vslot2_14.get(),vslot2_15.get(),vslot2_16.get(),vslot2_17.get(),
+                vslot2_18.get(),vslot2_19.get(),vslot2_20.get(),vslot2_21.get(),vslot2_22.get(),vslot2_23.get(),
+                vslot2_24.get(),vslot2_25.get(),vslot2_26.get(),vslot2_27.get(),vslot2_28.get(),vslot2_29.get(),vslot2_30.get()]
+
+   slot3list=[slot3_name.get(),slot3main_start.get(),slot3main_stop.get(),slot3_pre.get(),slot3_post.get(),slot3_vd1.get(),slot3_vd2.get(),slot3_vd3.get(),slot3_vd4.get(),
+                slot3_vd5.get(),slot3_vd6.get(),slot3_vd7.get(),slot3_vd8.get(),
+                slot3_vd9.get(),slot3_priorityno.get(),vslot3_1.get(),vslot3_2.get(),
+                vslot3_3.get(),vslot3_4.get(),vslot3_5.get(),vslot3_6.get(),vslot3_7.get(),
+                vslot3_8.get(),vslot3_9.get(),vslot3_10.get(),vslot3_11.get(),vslot3_12.get(),
+                vslot3_13.get(),vslot3_14.get(),vslot3_15.get(),vslot3_16.get(),vslot3_17.get(),
+                vslot3_18.get(),vslot3_19.get(),vslot3_20.get(),vslot3_21.get(),vslot3_22.get(),vslot3_23.get(),
+                vslot3_24.get(),vslot3_25.get(),vslot3_26.get(),vslot3_27.get(),vslot3_28.get(),vslot3_29.get(),vslot3_30.get()]
+
+   slot4list=[slot4_name.get(),slot4main_start.get(),slot4main_stop.get(),slot4_pre.get(),slot4_post.get(),slot4_vd1.get(),slot4_vd2.get(),slot4_vd3.get(),slot4_vd4.get(),
+                slot4_vd5.get(),slot4_vd6.get(),slot4_vd7.get(),slot4_vd8.get(),
+                slot4_vd9.get(),slot4_priorityno.get(),vslot4_1.get(),vslot4_2.get(),
+                vslot4_3.get(),vslot4_4.get(),vslot4_5.get(),vslot4_6.get(),vslot4_7.get(),
+                vslot4_8.get(),vslot4_9.get(),vslot4_10.get(),vslot4_11.get(),vslot4_12.get(),
+                vslot4_13.get(),vslot4_14.get(),vslot4_15.get(),vslot4_16.get(),vslot4_17.get(),
+                vslot4_18.get(),vslot4_19.get(),vslot4_20.get(),vslot4_21.get(),vslot4_22.get(),vslot4_23.get(),
+                vslot4_24.get(),vslot4_25.get(),vslot4_26.get(),vslot4_27.get(),vslot4_28.get(),vslot4_29.get(),vslot4_30.get()]
+
+   slot5list=[slot5_name.get(),slot5main_start.get(),slot5main_stop.get(),slot5_pre.get(),slot5_post.get(),slot5_vd1.get(),slot5_vd2.get(),slot5_vd3.get(),slot5_vd4.get(),
+                slot5_vd5.get(),slot5_vd6.get(),slot5_vd7.get(),slot5_vd8.get(),
+                slot5_vd9.get(),slot5_priorityno.get(),vslot5_1.get(),vslot5_2.get(),
+                vslot5_3.get(),vslot5_4.get(),vslot5_5.get(),vslot5_6.get(),vslot5_7.get(),
+                vslot5_8.get(),vslot5_9.get(),vslot5_10.get(),vslot5_11.get(),vslot5_12.get(),
+                vslot5_13.get(),vslot5_14.get(),vslot5_15.get(),vslot5_16.get(),vslot5_17.get(),
+                vslot5_18.get(),vslot5_19.get(),vslot5_20.get(),vslot5_21.get(),vslot5_22.get(),vslot5_23.get(),
+                vslot5_24.get(),vslot5_25.get(),vslot5_26.get(),vslot5_27.get(),vslot5_28.get(),vslot5_29.get(),vslot5_30.get()]
+    
+   programname=program_name.get()    
+   f=open(filename,'wb')
+   pickle.dump(slot1list,f)
+   pickle.dump(slot2list,f)
+   pickle.dump(slot3list,f)
+   pickle.dump(slot4list,f)
+   pickle.dump(slot5list,f)
+   pickle.dump(programname,f)
+   print(slot1list)
+   print(slot1list)
+   print(slot1list)
+   print(slot1list)
+   print(slot1list)
+   f.close()
+    
+def cleanslot1():
+    (slot1_name.set(""),slot1main_start.set(""),slot1main_stop.set(""),slot1_pre.set(""),slot1_post.set(""),slot1_vd1.set(""),slot1_vd2.set(""),slot1_vd3.set(""),slot1_vd4.set(""),
+            slot1_vd5.set(""),slot1_vd6.set(""),slot1_vd7.set(""),slot1_vd8.set(""),
+            slot1_vd9.set(""),slot1_priorityno.set(""),vslot1_1.set(0),vslot1_2.set("0"),
+            vslot1_3.set(0),vslot1_4.set(0),vslot1_5.set(0),vslot1_6.set(0),vslot1_7.set(0),
+            vslot1_8.set(0),vslot1_9.set(0),vslot1_10.set(0),vslot1_11.set(0),vslot1_12.set(0),
+            vslot1_13.set(0),vslot1_14.set(0),vslot1_15.set(0),vslot1_16.set(0),vslot1_17.set(0),
+            vslot1_18.set(0),vslot1_19.set(0),vslot1_20.set(0),vslot1_21.set(0),vslot1_22.set(0),vslot1_23.set(0),
+            vslot1_24.set(0),vslot1_25.set(0),vslot1_26.set(0),vslot1_27.set(0),vslot1_28.set(0),vslot1_29.set(0),vslot1_30.set(0))
+        
+def cleanslot2():
+    (slot2_name.set(""),slot2main_start.set(""),slot2main_stop.set(""),slot2_pre.set(""),slot2_post.set(""),slot2_vd1.set(""),slot2_vd2.set(""),slot2_vd3.set(""),slot2_vd4.set(""),
+            slot2_vd5.set(""),slot2_vd6.set(""),slot2_vd7.set(""),slot2_vd8.set(""),
+            slot2_vd9.set(""),slot2_priorityno.set(""),vslot2_1.set(0),vslot2_2.set("0"),
+            vslot2_3.set(0),vslot2_4.set(0),vslot2_5.set(0),vslot2_6.set(0),vslot2_7.set(0),
+            vslot2_8.set(0),vslot2_9.set(0),vslot2_10.set(0),vslot2_11.set(0),vslot2_12.set(0),
+            vslot2_13.set(0),vslot2_14.set(0),vslot2_15.set(0),vslot2_16.set(0),vslot2_17.set(0),
+            vslot2_18.set(0),vslot2_19.set(0),vslot2_20.set(0),vslot2_21.set(0),vslot2_22.set(0),vslot2_23.set(0),
+            vslot2_24.set(0),vslot2_25.set(0),vslot2_26.set(0),vslot2_27.set(0),vslot2_28.set(0),vslot2_29.set(0),vslot2_30.set(0))
+        
+   
+def cleanslot3():
+    (slot3_name.set(""),slot3main_start.set(""),slot3main_stop.set(""),slot3_pre.set(""),slot3_post.set(""),slot3_vd1.set(""),slot3_vd2.set(""),slot3_vd3.set(""),slot3_vd4.set(""),
+            slot3_vd5.set(""),slot3_vd6.set(""),slot3_vd7.set(""),slot3_vd8.set(""),
+            slot3_vd9.set(""),slot3_priorityno.set(""),vslot3_1.set(0),vslot3_2.set("0"),
+            vslot3_3.set(0),vslot3_4.set(0),vslot3_5.set(0),vslot3_6.set(0),vslot3_7.set(0),
+            vslot3_8.set(0),vslot3_9.set(0),vslot3_10.set(0),vslot3_11.set(0),vslot3_12.set(0),
+            vslot3_13.set(0),vslot3_14.set(0),vslot3_15.set(0),vslot3_16.set(0),vslot3_17.set(0),
+            vslot3_18.set(0),vslot3_19.set(0),vslot3_20.set(0),vslot3_21.set(0),vslot3_22.set(0),vslot3_23.set(0),
+            vslot3_24.set(0),vslot3_25.set(0),vslot3_26.set(0),vslot3_27.set(0),vslot3_28.set(0),vslot3_29.set(0),vslot3_30.set(0))
+        
+   
+  
+def cleanslot4():
+    (slot4_name.set(""),slot4main_start.set(""),slot4main_stop.set(""),slot4_pre.set(""),slot4_post.set(""),slot4_vd1.set(""),slot4_vd2.set(""),slot4_vd3.set(""),slot4_vd4.set(""),
+            slot4_vd5.set(""),slot4_vd6.set(""),slot4_vd7.set(""),slot4_vd8.set(""),
+            slot4_vd9.set(""),slot4_priorityno.set(""),vslot4_1.set(0),vslot4_2.set("0"),
+            vslot4_3.set(0),vslot4_4.set(0),vslot4_5.set(0),vslot4_6.set(0),vslot4_7.set(0),
+            vslot4_8.set(0),vslot4_9.set(0),vslot4_10.set(0),vslot4_11.set(0),vslot4_12.set(0),
+            vslot4_13.set(0),vslot4_14.set(0),vslot4_15.set(0),vslot4_16.set(0),vslot4_17.set(0),
+            vslot4_18.set(0),vslot4_19.set(0),vslot4_20.set(0),vslot4_21.set(0),vslot4_22.set(0),vslot4_23.set(0),
+            vslot4_24.set(0),vslot4_25.set(0),vslot4_26.set(0),vslot4_27.set(0),vslot4_28.set(0),vslot4_29.set(0),vslot4_30.set(0))
+        
+   
+   
+
+def cleanslot5():
+    (slot5_name.set(""),slot5main_start.set(""),slot5main_stop.set(""),slot5_pre.set(""),slot5_post.set(""),slot5_vd1.set(""),slot5_vd2.set(""),slot5_vd3.set(""),slot5_vd4.set(""),
+            slot5_vd5.set(""),slot5_vd6.set(""),slot5_vd7.set(""),slot5_vd8.set(""),
+            slot5_vd9.set(""),slot5_priorityno.set(""),vslot5_1.set(0),vslot5_2.set("0"),
+            vslot5_3.set(0),vslot5_4.set(0),vslot5_5.set(0),vslot5_6.set(0),vslot5_7.set(0),
+            vslot5_8.set(0),vslot5_9.set(0),vslot5_10.set(0),vslot5_11.set(0),vslot5_12.set(0),
+            vslot5_13.set(0),vslot5_14.set(0),vslot5_15.set(0),vslot5_16.set(0),vslot5_17.set(0),
+            vslot5_18.set(0),vslot5_19.set(0),vslot5_20.set(0),vslot5_21.set(0),vslot5_22.set(0),vslot5_23.set(0),
+            vslot5_24.set(0),vslot5_25.set(0),vslot5_26.set(0),vslot5_27.set(0),vslot5_28.set(0),vslot5_29.set(0),vslot5_30.set(0))
+        
+ 
+
+def cleanprogram():
+
+  program_name.set("")
+  cleanslot1()
+  cleanslot2()
+  cleanslot3()
+  cleanslot4()
+  cleanslot5()
+   
+
+def loadslot1():
+   #slot1_pre.set("01:00")
+  
+   myfiletypes = [('slot files', '*.txt')]
+   filename=askopenfilename(filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Select a Slot')
+   f=open(filename,'rb')
+   x=pickle.load(f)
+   print(x)
+   (slot1_name.set(x[0]),slot1main_start.set(x[1]),slot1main_stop.set(x[2]),slot1_pre.set(x[3]),slot1_post.set(x[4]),slot1_vd1.set(x[5]),slot1_vd2.set(x[6]),slot1_vd3.set(x[7]),slot1_vd4.set(x[8]),
+            slot1_vd5.set(x[9]),slot1_vd6.set(x[10]),slot1_vd7.set(x[11]),slot1_vd8.set(x[12]),
+            slot1_vd9.set(x[13]),slot1_priorityno.set(x[14]),vslot1_1.set(x[15]),vslot1_2.set(x[16]),
+            vslot1_3.set(x[17]),vslot1_4.set(x[18]),vslot1_5.set(x[19]),vslot1_6.set(x[20]),vslot1_7.set(x[21]),
+            vslot1_8.set(x[22]),vslot1_9.set(x[23]),vslot1_10.set(x[24]),vslot1_11.set(x[25]),vslot1_12.set(x[26]),
+            vslot1_13.set(x[27]),vslot1_14.set(x[28]),vslot1_15.set(x[29]),vslot1_16.set(x[30]),vslot1_17.set(x[31]),
+            vslot1_18.set(x[32]),vslot1_19.set(x[33]),vslot1_20.set(x[34]),vslot1_21.set(x[35]),vslot1_22.set(x[36]),vslot1_23.set(x[37]),
+            vslot1_24.set(x[38]),vslot1_25.set(x[39]),vslot1_26.set(x[40]),vslot1_27.set(x[41]),vslot1_28.set(x[42]),vslot1_29.set(x[43]),vslot1_30.set(x[44]))
+        
+   f.close()
+
+
+ 
+def loadslot2():   
+   #slot2_pre.set("01:00")
+   myfiletypes = [('slot files', '*.txt')]
+   filename=askopenfilename(filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Select a Slot')
+   f=open(filename,'rb')
+   x=pickle.load(f)
+   print(x)
+   (slot2_name.set(x[0]),slot2main_start.set(x[1]),slot2main_stop.set(x[2]),slot2_pre.set(x[3]),slot2_post.set(x[4]),slot2_vd1.set(x[5]),slot2_vd2.set(x[6]),slot2_vd3.set(x[7]),slot2_vd4.set(x[8]),
+            slot2_vd5.set(x[9]),slot2_vd6.set(x[10]),slot2_vd7.set(x[11]),slot2_vd8.set(x[12]),
+            slot2_vd9.set(x[13]),slot2_priorityno.set(x[14]),vslot2_1.set(x[15]),vslot2_2.set(x[16]),
+            vslot2_3.set(x[17]),vslot2_4.set(x[18]),vslot2_5.set(x[19]),vslot2_6.set(x[20]),vslot2_7.set(x[21]),
+            vslot2_8.set(x[22]),vslot2_9.set(x[23]),vslot2_10.set(x[24]),vslot2_11.set(x[25]),vslot2_12.set(x[26]),
+            vslot2_13.set(x[27]),vslot2_14.set(x[28]),vslot2_15.set(x[29]),vslot2_16.set(x[30]),vslot2_17.set(x[31]),
+            vslot2_18.set(x[32]),vslot2_19.set(x[33]),vslot2_20.set(x[34]),vslot2_21.set(x[35]),vslot2_22.set(x[36]),vslot2_23.set(x[37]),
+            vslot2_24.set(x[38]),vslot2_25.set(x[39]),vslot2_26.set(x[40]),vslot2_27.set(x[41]),vslot2_28.set(x[42]),vslot2_29.set(x[43]),vslot2_30.set(x[44]))
+   f.close()
+
+
+def loadslot3():
+   #slot3_pre.set("01:00")
+   myfiletypes = [('slot files', '*.txt')]
+   filename=askopenfilename(filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Select a Slot')
+   f=open(filename,'rb')
+   x=pickle.load(f)
+   print(x)
+   (slot3_name.set(x[0]),slot3main_start.set(x[1]),slot3main_stop.set(x[2]),slot3_pre.set(x[3]),slot3_post.set(x[4]),slot3_vd1.set(x[5]),slot3_vd2.set(x[6]),slot3_vd3.set(x[7]),slot3_vd4.set(x[8]),
+            slot3_vd5.set(x[9]),slot3_vd6.set(x[10]),slot3_vd7.set(x[11]),slot3_vd8.set(x[12]),
+            slot3_vd9.set(x[13]),slot3_priorityno.set(x[14]),vslot3_1.set(x[15]),vslot3_2.set(x[16]),
+            vslot3_3.set(x[17]),vslot3_4.set(x[18]),vslot3_5.set(x[19]),vslot3_6.set(x[20]),vslot3_7.set(x[21]),
+            vslot3_8.set(x[22]),vslot3_9.set(x[23]),vslot3_10.set(x[24]),vslot3_11.set(x[25]),vslot3_12.set(x[26]),
+            vslot3_13.set(x[27]),vslot3_14.set(x[28]),vslot3_15.set(x[29]),vslot3_16.set(x[30]),vslot3_17.set(x[31]),
+            vslot3_18.set(x[32]),vslot3_19.set(x[33]),vslot3_20.set(x[34]),vslot3_21.set(x[35]),vslot3_22.set(x[36]),vslot3_23.set(x[37]),
+            vslot3_24.set(x[38]),vslot3_25.set(x[39]),vslot3_26.set(x[40]),vslot3_27.set(x[41]),vslot3_28.set(x[42]),vslot3_29.set(x[43]),vslot3_30.set(x[44]))
+   f.close()
+
+def loadslot4():
+   #slot4_pre.set("01:00")
+   myfiletypes = [('slot files', '*.txt')]
+   filename=askopenfilename(filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Select a Slot')
+   f=open(filename,'rb')
+   x=pickle.load(f)
+   print(x)
+   (slot4_name.set(x[0]),slot4main_start.set(x[1]),slot4main_stop.set(x[2]),slot4_pre.set(x[3]),slot4_post.set(x[4]),slot4_vd1.set(x[5]),slot4_vd2.set(x[6]),slot4_vd3.set(x[7]),slot4_vd4.set(x[8]),
+            slot4_vd5.set(x[9]),slot4_vd6.set(x[10]),slot4_vd7.set(x[11]),slot4_vd8.set(x[12]),
+            slot4_vd9.set(x[13]),slot4_priorityno.set(x[14]),vslot4_1.set(x[15]),vslot4_2.set(x[16]),
+            vslot4_3.set(x[17]),vslot4_4.set(x[18]),vslot4_5.set(x[19]),vslot4_6.set(x[20]),vslot4_7.set(x[21]),
+            vslot4_8.set(x[22]),vslot4_9.set(x[23]),vslot4_10.set(x[24]),vslot4_11.set(x[25]),vslot4_12.set(x[26]),
+            vslot4_13.set(x[27]),vslot4_14.set(x[28]),vslot4_15.set(x[29]),vslot4_16.set(x[30]),vslot4_17.set(x[31]),
+            vslot4_18.set(x[32]),vslot4_19.set(x[33]),vslot4_20.set(x[34]),vslot4_21.set(x[35]),vslot4_22.set(x[36]),vslot4_23.set(x[37]),
+            vslot4_24.set(x[38]),vslot4_25.set(x[39]),vslot4_26.set(x[40]),vslot4_27.set(x[41]),vslot4_28.set(x[42]),vslot4_29.set(x[43]),vslot4_30.set(x[44]))
+   f.close()
+
+
+def loadslot5():
+   #slot5_pre.set("01:00")
+   myfiletypes = [('slot files', '*.txt')]
+   filename=askopenfilename(filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Select a Slot')
+   f=open(filename,'rb')
+   x=pickle.load(f)
+   print(x)
+   (slot5_name.set(x[0]),slot5main_start.set(x[1]),slot5main_stop.set(x[2]),slot5_pre.set(x[3]),slot5_post.set(x[4]),slot5_vd1.set(x[5]),slot5_vd2.set(x[6]),slot5_vd3.set(x[7]),slot5_vd4.set(x[8]),
+            slot5_vd5.set(x[9]),slot5_vd6.set(x[10]),slot5_vd7.set(x[11]),slot5_vd8.set(x[12]),
+            slot5_vd9.set(x[13]),slot5_priorityno.set(x[14]),vslot5_1.set(x[15]),vslot5_2.set(x[16]),
+            vslot5_3.set(x[17]),vslot5_4.set(x[18]),vslot5_5.set(x[19]),vslot5_6.set(x[20]),vslot5_7.set(x[21]),
+            vslot5_8.set(x[22]),vslot5_9.set(x[23]),vslot5_10.set(x[24]),vslot5_11.set(x[25]),vslot5_12.set(x[26]),
+            vslot5_13.set(x[27]),vslot5_14.set(x[28]),vslot5_15.set(x[29]),vslot5_16.set(x[30]),vslot5_17.set(x[31]),
+            vslot5_18.set(x[32]),vslot5_19.set(x[33]),vslot5_20.set(x[34]),vslot5_21.set(x[35]),vslot5_22.set(x[36]),vslot5_23.set(x[37]),
+            vslot5_24.set(x[38]),vslot5_25.set(x[39]),vslot5_26.set(x[40]),vslot5_27.set(x[41]),vslot5_28.set(x[42]),vslot5_29.set(x[43]),vslot5_30.set(x[44]))
+   f.close()
+
+def saveslot1():
+    print('reading slot')
+    myfiletypes = [('slot files', '*.txt')]
+    filename=asksaveasfilename(initialfile=slot1_name.get(),filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Save the Slot')
+    slot1list=[slot1_name.get(),slot1main_start.get(),slot1main_stop.get(),slot1_pre.get(),slot1_post.get(),slot1_vd1.get(),slot1_vd2.get(),slot1_vd3.get(),slot1_vd4.get(),
+                slot1_vd5.get(),slot1_vd6.get(),slot1_vd7.get(),slot1_vd8.get(),
+                slot1_vd9.get(),slot1_priorityno.get(),vslot1_1.get(),vslot1_2.get(),
+                vslot1_3.get(),vslot1_4.get(),vslot1_5.get(),vslot1_6.get(),vslot1_7.get(),
+                vslot1_8.get(),vslot1_9.get(),vslot1_10.get(),vslot1_11.get(),vslot1_12.get(),
+                vslot1_13.get(),vslot1_14.get(),vslot1_15.get(),vslot1_16.get(),vslot1_17.get(),
+                vslot1_18.get(),vslot1_19.get(),vslot1_20.get(),vslot1_21.get(),vslot1_22.get(),vslot1_23.get(),
+                vslot1_24.get(),vslot1_25.get(),vslot1_26.get(),vslot1_27.get(),vslot1_28.get(),vslot1_29.get(),vslot1_30.get()]
+
+
+    f=open(filename,'wb')
+    pickle.dump(slot1list,f)
+    print(slot1list)
+    f.close()
+    print("do nothing")
+    
+
+def saveslot2():
+    print('reading slot')
+    myfiletypes = [('slot files', '*.txt')]
+    filename=asksaveasfilename(initialfile=slot2_name.get(),filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Save the Slot')
+    slot2list=[slot2_name.get(),slot2main_start.get(),slot2main_stop.get(),slot2_pre.get(),slot2_post.get(),slot2_vd1.get(),slot2_vd2.get(),slot2_vd3.get(),slot2_vd4.get(),
+                slot2_vd5.get(),slot2_vd6.get(),slot2_vd7.get(),slot2_vd8.get(),
+                slot2_vd9.get(),slot2_priorityno.get(),vslot2_1.get(),vslot2_2.get(),
+                vslot2_3.get(),vslot2_4.get(),vslot2_5.get(),vslot2_6.get(),vslot2_7.get(),
+                vslot2_8.get(),vslot2_9.get(),vslot2_10.get(),vslot2_11.get(),vslot2_12.get(),
+                vslot2_13.get(),vslot2_14.get(),vslot2_15.get(),vslot2_16.get(),vslot2_17.get(),
+                vslot2_18.get(),vslot2_19.get(),vslot2_20.get(),vslot2_21.get(),vslot2_22.get(),vslot2_23.get(),
+                vslot2_24.get(),vslot2_25.get(),vslot2_26.get(),vslot2_27.get(),vslot2_28.get(),vslot2_29.get(),vslot2_30.get()]
+
+
+    f=open(filename,'wb')
+    pickle.dump(slot2list,f)
+    print(slot2list)
+    f.close()
+    print("do nothing")
+    
+
+def saveslot3():
+    print('reading slot')
+    myfiletypes = [('slot files', '*.txt')]
+    filename=asksaveasfilename(initialfile=slot3_name.get(),filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Save the Slot')
+    slot3list=[slot3_name.get(),slot3main_start.get(),slot3main_stop.get(),slot3_pre.get(),slot3_post.get(),slot3_vd1.get(),slot3_vd2.get(),slot3_vd3.get(),slot3_vd4.get(),
+                slot3_vd5.get(),slot3_vd6.get(),slot3_vd7.get(),slot3_vd8.get(),
+                slot3_vd9.get(),slot3_priorityno.get(),vslot3_1.get(),vslot3_2.get(),
+                vslot3_3.get(),vslot3_4.get(),vslot3_5.get(),vslot3_6.get(),vslot3_7.get(),
+                vslot3_8.get(),vslot3_9.get(),vslot3_10.get(),vslot3_11.get(),vslot3_12.get(),
+                vslot3_13.get(),vslot3_14.get(),vslot3_15.get(),vslot3_16.get(),vslot3_17.get(),
+                vslot3_18.get(),vslot3_19.get(),vslot3_20.get(),vslot3_21.get(),vslot3_22.get(),vslot3_23.get(),
+                vslot3_24.get(),vslot3_25.get(),vslot3_26.get(),vslot3_27.get(),vslot3_28.get(),vslot3_29.get(),vslot3_30.get()]
+
+
+    f=open(filename,'wb')
+    pickle.dump(slot3list,f)
+    print(slot3list)
+    f.close()
+    print("do nothing")
+    
+def saveslot4():
+    print('reading slot')
+    myfiletypes = [('slot files', '*.txt')]
+    filename=asksaveasfilename(initialfile=slot4_name.get(),filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Save the Slot')
+    slot4list=[slot4_name.get(),slot4main_start.get(),slot4main_stop.get(),slot4_pre.get(),slot4_post.get(),slot4_vd1.get(),slot4_vd2.get(),slot4_vd3.get(),slot4_vd4.get(),
+                slot4_vd5.get(),slot4_vd6.get(),slot4_vd7.get(),slot4_vd8.get(),
+                slot4_vd9.get(),slot4_priorityno.get(),vslot4_1.get(),vslot4_2.get(),
+                vslot4_3.get(),vslot4_4.get(),vslot4_5.get(),vslot4_6.get(),vslot4_7.get(),
+                vslot4_8.get(),vslot4_9.get(),vslot4_10.get(),vslot4_11.get(),vslot4_12.get(),
+                vslot4_13.get(),vslot4_14.get(),vslot4_15.get(),vslot4_16.get(),vslot4_17.get(),
+                vslot4_18.get(),vslot4_19.get(),vslot4_20.get(),vslot4_21.get(),vslot4_22.get(),vslot4_23.get(),
+                vslot4_24.get(),vslot4_25.get(),vslot4_26.get(),vslot4_27.get(),vslot4_28.get(),vslot4_29.get(),vslot4_30.get()]
+
+
+    f=open(filename,'wb')
+    pickle.dump(slot4list,f)
+    print(slot4list)
+    f.close()
+    print("do nothing")
+    
+    
+def saveslot5():
+    print('reading slot')
+    myfiletypes = [('slot files', '*.txt')]
+    filename=asksaveasfilename(initialfile=slot5_name.get(),filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/slots',title='Save the Slot')
+    slot5list=[slot5_name.get(),slot5main_start.get(),slot5main_stop.get(),slot5_pre.get(),slot5_post.get(),slot5_vd1.get(),slot5_vd2.get(),slot5_vd3.get(),slot5_vd4.get(),
+                slot5_vd5.get(),slot5_vd6.get(),slot5_vd7.get(),slot5_vd8.get(),
+                slot5_vd9.get(),slot5_priorityno.get(),vslot5_1.get(),vslot5_2.get(),
+                vslot5_3.get(),vslot5_4.get(),vslot5_5.get(),vslot5_6.get(),vslot5_7.get(),
+                vslot5_8.get(),vslot5_9.get(),vslot5_10.get(),vslot5_11.get(),vslot5_12.get(),
+                vslot5_13.get(),vslot5_14.get(),vslot5_15.get(),vslot5_16.get(),vslot5_17.get(),
+                vslot5_18.get(),vslot5_19.get(),vslot5_20.get(),vslot5_21.get(),vslot5_22.get(),vslot5_23.get(),
+                vslot5_24.get(),vslot5_25.get(),vslot5_26.get(),vslot5_27.get(),vslot5_28.get(),vslot5_29.get(),vslot5_30.get()]
+
+
+    f=open(filename,'wb')
+    pickle.dump(slot5list,f)
+    print(slot5list)
+    f.close()
+    print("do nothing")
+    
+    
+
+
+
+
+    
+    
+def savebuttonpressed():
+   print("saving all the settings")
+   myfiletypes = [('setting files', '*.txt')]
+   filename=asksaveasfilename(filetypes = myfiletypes,initialdir='/home/yatish/Desktop/spe_workspace/settings',title='Save the program')
+   settinglist_pump=[checkpump1.get(),pump1rate.get(),checkpump2.get(),pump2rate.get(),checkpump3.get(),
+                        pump3rate.get(),checkpump4.get(),pump4rate.get(),checkpump5.get(),pump5rate.get(),checkpump6.get(),
+                        pump6rate.get()]
+   print(settinglist_pump)
+   settinglist_venturi=[checkventuri1.get(),venturi1rate.get(),checkventuri2.get(),venturi2rate.get(),
+                        checkventuri3.get(),venturi3rate.get(),checkventuri4.get(),venturi4rate.get(),
+                        checkventuri5.get(),venturi5rate.get(),checkventuri6.get(),venturi6rate.get(),
+                        checkventuri7.get(),venturi7rate.get(),checkventuri8.get(),venturi8rate.get(),
+                        checkventuri9.get(),venturi9rate.get()]
+   settinglist_valve=[checkvalve1.get(),valve1rate.get(),checkvalve2.get(),valve2rate.get(),checkvalve3.get(),valve3rate.get(),
+                        checkvalve4.get(),valve4rate.get(),checkvalve5.get(),valve5rate.get(),checkvalve6.get(),valve6rate.get(),
+                        checkvalve7.get(),valve7rate.get(),checkvalve8.get(),valve8rate.get(),checkvalve9.get(),valve9rate.get(),
+                        checkvalve10.get(),valve10rate.get(),checkvalve11.get(),valve11rate.get(),checkvalve12.get(),valve12rate.get(),
+                        checkvalve13.get(),valve13rate.get(),checkvalve14.get(),valve14rate.get(),checkvalve15.get(),valve15rate.get(),
+                        checkvalve16.get(),valve16rate.get(),checkvalve17.get(),valve17rate.get(),checkvalve18.get(),valve18rate.get(),
+                        checkvalve19.get(),valve19rate.get(),checkvalve20.get(),valve20rate.get(),checkvalve21.get(),valve21rate.get(),
+                        checkvalve22.get(),valve22rate.get(),checkvalve23.get(),valve23rate.get(),checkvalve24.get(),valve24rate.get(),
+                        checkvalve25.get(),valve25rate.get(),checkvalve26.get(),valve26rate.get(),checkvalve27.get(),valve27rate.get(),
+                        checkvalve28.get(),valve28rate.get(),checkvalve29.get(),valve29rate.get(),checkvalve30.get(),valve30rate.get()]
+   print(settinglist_venturi)
+   print(settinglist_valve)
+   
+   outfile=open(filename,'wb')
+   pickle.dump(settinglist_pump,outfile)
+   pickle.dump(settinglist_venturi,outfile)
+   pickle.dump(settinglist_valve,outfile)
+
+
+
+def exitbuttonpressed():
+    quit()
+    print("do nothing")
+
+    
+
+
+
+def settingpagefun():
+    root1=Tk()
+    root1.geometry('1020x600')
+    root1.title("SETTING PAGE")
+    root1.configure(background = '#a6a6a6')
+    root1.resizable(FALSE,FALSE)
+    savebutton=Button(root1,text="SAVE ALL",command=savebuttonpressed)
+    savebutton.place(x=850,y=40,width=100,height=40)
+    exitbutton=Button(root1,text="EXIT",command=exitbuttonpressed)
+    exitbutton.place(x=850,y=100,width=100,height=40)
+
+    #code ends for two buttton
+
+    """main code for pump window"""
+    #HEADING code
+    pump = LabelFrame(root1, text="PUMPS & FLOW RATE", background='gray')
+    pump.place(x=10, y=10,width=400,height=200)
+    pumplabel=Label(root1,text="PUMPS",background='#ffdbff',borderwidth=1,relief=GROOVE,underline=0)
+    pumplabel.place(x=15,y=30,height=20,width=50)
+    pumpstatuslabel=Label(root1,text="ACTIVATE",background='#ffdbff',borderwidth=1,relief=GROOVE)
+    pumpstatuslabel.place(x=90,y=30,height=20,width=90)
+    pumpflowlabel=Label(root1,text="WATER PUMPING RATE(in L/Hr)",background='#ffdbff',borderwidth=1,relief=GROOVE)
+    pumpflowlabel.place(x=200,y=30,height=20,width=200)
+
+    #PUMP NO LABELS,ACTIVATEPUMP AND FLOW RATE RATE CODE RESPECTIVELY
+    Label(root1,text='PUMP1',borderwidth=1,relief="raised", background='gray').place(x=15,y=52,width=50,height=20)
+    Label(root1,text='PUMP2',borderwidth=1,relief="raised", background='gray').place(x=15,y=74,width=50,height=20)
+    Label(root1,text='PUMP3',borderwidth=1,relief="raised", background='gray').place(x=15,y=96,width=50,height=20)
+    Label(root1,text='PUMP4',borderwidth=1,relief="raised", background='gray').place(x=15,y=118,width=50,height=20)
+    Label(root1,text='PUMP5',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=15,y=140,width=50,height=20)
+    Label(root1,text='PUMP6',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=15,y=162,width=50,height=20)
+    checkpump1=IntVar()
+    checkpump2=IntVar()
+    checkpump3=IntVar()
+    checkpump4=IntVar()
+    checkpump5=IntVar()
+    checkpump6=IntVar()
+    Checkbutton(root1, text="ACTIVATE", variable=checkpump1,relief=GROOVE, bd=1).place(x=90,y=52,width=90,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkpump2,relief=GROOVE, bd=1).place(x=90,y=74,width=90,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkpump3,relief=GROOVE, bd=1).place(x=90,y=96,width=90,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkpump4,relief=GROOVE, bd=1).place(x=90,y=118,width=90,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkpump5,relief=GROOVE, bd=1,state=DISABLED).place(x=90,y=140,width=90,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkpump6,relief=GROOVE, bd=1,state=DISABLED).place(x=90,y=162,width=90,height=20)
+    pump1rate = IntVar()
+    pump2rate = IntVar()
+    pump3rate = IntVar()
+    pump4rate = IntVar()
+    pump5rate = IntVar()
+    pump6rate = IntVar()
+    Entry(root1, textvariable=pump1rate,width =10).place(x=220,y=52,width=150,height=20)
+    Entry(root1, textvariable=pump2rate,width =10).place(x=220,y=74,width=150,height=20)
+    Entry(root1, textvariable=pump3rate,width =10).place(x=220,y=96,width=150,height=20)
+    Entry(root1, textvariable=pump4rate,width =10).place(x=220,y=118,width=150,height=20)
+    Entry(root1, textvariable=pump5rate,width =10,state=DISABLED).place(x=220,y=140,width=150,height=20)
+    Entry(root1, textvariable=pump6rate,width =10,state=DISABLED).place(x=220,y=162,width=150,height=20)
+    venturi = LabelFrame(root1, text="VENTURI & SUCTION RATE",background='gray')
+    venturi.place(x=430, y=10,width=400,height=200)
+    venturilabel=Label(root1,text="VENTURI'S",background='#ffdbff',borderwidth=1,relief=GROOVE,underline=0)
+    venturilabel.place(x=440,y=30,height=20,width=100)
+    venturistatuslabel=Label(root1,text="ACTIVATE",background='#ffdbff',borderwidth=1,relief=GROOVE)
+    venturistatuslabel.place(x=550,y=30,height=20,width=70)
+    venturiflowlabel=Label(root1,text="SUCTION RATE (in L/Hr)",background='#ffdbff',borderwidth=1,relief=GROOVE)
+    venturiflowlabel.place(x=640,y=30,height=20,width=180)
+
+    #PUMP NO LABELS,ACTIVATEPUMP AND FLOW RATE RATE CODE RESPECTIVELY    #font=("Helvetica",9)
+    Label(root1,text='VENTURI 1',fg="BLUE",borderwidth=1,relief="raised", background='gray').place(x=440,y=52,width=100,height=15)
+    Label(root1,text='VENTURI 2',fg="BLUE",borderwidth=1,relief="raised", background='gray').place(x=440,y=68,width=100,height=15)
+    Label(root1,text='VENTURI 3',fg="BLUE",borderwidth=1,relief="raised", background='gray').place(x=440,y=84,width=100,height=15)
+    Label(root1,text='VENTURI 4',fg="BLUE",borderwidth=1,relief="raised", background='gray').place(x=440,y=100,width=100,height=15)
+    Label(root1,text='VENTURI 5',fg="white",borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=440,y=116,width=100,height=15)
+    Label(root1,text='VENTURI 6',fg="white",borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=440,y=132,width=100,height=15)
+    Label(root1,text='VENTURI 7',fg="white",borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=440,y=148,width=100,height=15)
+    Label(root1,text='VENTURI 8',fg="white",borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=440,y=164,width=100,height=15)
+    Label(root1,text='VENTURI 9',fg="white",borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=440,y=180,width=100,height=15)
+
+
+    checkventuri1=IntVar()
+    checkventuri2=IntVar()
+    checkventuri3=IntVar()
+    checkventuri4=IntVar()
+    checkventuri5=IntVar()
+    checkventuri6=IntVar()
+    checkventuri7=IntVar()
+    checkventuri8=IntVar()
+    checkventuri9=IntVar()
+
+    Checkbutton(root1, text="ACTV",variable=checkventuri1,relief=GROOVE, bd=1).place(x=550,y=52,width=70,height=15)
+    Checkbutton(root1, text="ACTV", variable=checkventuri2,relief=GROOVE, bd=1).place(x=550,y=68,width=70,height=15)
+    Checkbutton(root1, text="ACTV", variable=checkventuri3,relief=GROOVE, bd=1).place(x=550,y=84,width=70,height=15)
+    Checkbutton(root1, text="ACTV", variable=checkventuri4,relief=GROOVE, bd=1).place(x=550,y=100,width=70,height=15)
+    Checkbutton(root1, text="ACTV", variable=checkventuri5,relief=GROOVE, bd=1,state=DISABLED).place(x=550,y=116,width=70,height=15)
+    Checkbutton(root1, text="ACTV", variable=checkventuri6,relief=GROOVE, bd=1,state=DISABLED).place(x=550,y=132,width=70,height=15)
+    Checkbutton(root1, text="ACTV", variable=checkventuri7,relief=GROOVE, bd=1,state=DISABLED).place(x=550,y=148,width=70,height=15)
+    Checkbutton(root1, text="ACTV", variable=checkventuri8,relief=GROOVE, bd=1,state=DISABLED).place(x=550,y=164,width=70,height=15)
+    Checkbutton(root1, text="ACTV", variable=checkventuri9,relief=GROOVE, bd=1,state=DISABLED).place(x=550,y=180,width=70,height=15)
+
+    venturi1rate = IntVar()
+    venturi2rate = IntVar()
+    venturi3rate = IntVar()
+    venturi4rate = IntVar()
+    venturi5rate = IntVar()
+    venturi6rate = IntVar()
+    venturi7rate = IntVar()
+    venturi8rate = IntVar()
+    venturi9rate = IntVar()
+
+    Entry(root1, textvariable=venturi1rate,width =10).place(x=680,y=52,width=100,height=15)
+    Entry(root1, textvariable=venturi2rate,width =10).place(x=680,y=68,width=100,height=15)
+    Entry(root1, textvariable=venturi3rate,width =10).place(x=680,y=84,width=100,height=15)
+    Entry(root1, textvariable=venturi4rate,width =10).place(x=680,y=100,width=100,height=15)
+    Entry(root1, textvariable=venturi5rate,width =10,state=DISABLED).place(x=680,y=116,width=100,height=15)
+    Entry(root1, textvariable=venturi6rate,width =10,state=DISABLED).place(x=680,y=132,width=100,height=15)
+    Entry(root1, textvariable=venturi7rate,width =10,state=DISABLED).place(x=680,y=148,width=100,height=15)
+    Entry(root1, textvariable=venturi8rate,width =10,state=DISABLED).place(x=680,y=164,width=100,height=15)
+    Entry(root1, textvariable=venturi9rate,width =10,state=DISABLED).place(x=680,y=180,width=100,height=15)
+
+    valves = LabelFrame(root1, text="VALVES & FLOW RATE",background='gray')
+    valves.place(x=10, y=220,width=960,height=280)
+
+    valveslabel1=Label(root1,text="VALVES      |    ACTIVATE      | FLOW RATE       \n                                     in (L/Hr)",background='#ffdbff',borderwidth=1,relief=GROOVE,underline=0)
+    valveslabel1.place(x=15,y=240,height=30,width=300)
+
+    Label(root1,text='VALVE 1',borderwidth=1,relief="raised", background='gray').place(x=15,y=272,width=85,height=20)
+    Label(root1,text='VALVE 2',borderwidth=1,relief="raised", background='gray').place(x=15,y=293,width=85,height=20)
+    Label(root1,text='VALVE 3',borderwidth=1,relief="raised", background='gray').place(x=15,y=314,width=85,height=20)
+    Label(root1,text='VALVE 4',borderwidth=1,relief="raised", background='gray').place(x=15,y=335,width=85,height=20)
+    Label(root1,text='VALVE 5',borderwidth=1,relief="raised", background='gray').place(x=15,y=356,width=85,height=20)
+    Label(root1,text='VALVE 6',borderwidth=1,relief="raised", background='gray').place(x=15,y=377,width=85,height=20)
+    Label(root1,text='VALVE 7',borderwidth=1,relief="raised", background='gray').place(x=15,y=398,width=85,height=20)
+    Label(root1,text='VALVE 8',borderwidth=1,relief="raised", background='gray').place(x=15,y=419,width=85,height=20)
+    Label(root1,text='VALVE 9',borderwidth=1,relief="raised", background='gray').place(x=15,y=440,width=85,height=20)
+    Label(root1,text='VALVE 10',borderwidth=1,relief="raised", background='gray').place(x=15,y=461,width=85,height=20)
+
+    checkvalve1=IntVar()
+    checkvalve2=IntVar()
+    checkvalve3=IntVar()
+    checkvalve4=IntVar()
+    checkvalve5=IntVar()
+    checkvalve6=IntVar()
+    checkvalve7=IntVar()
+    checkvalve8=IntVar()
+    checkvalve9=IntVar()
+    checkvalve10=IntVar()
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve1,relief=GROOVE, bd=1).place(x=100,y=272,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve2,relief=GROOVE, bd=1).place(x=100,y=293,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve3,relief=GROOVE, bd=1).place(x=100,y=314,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve4,relief=GROOVE, bd=1).place(x=100,y=335,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve5,relief=GROOVE, bd=1).place(x=100,y=356,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve6,relief=GROOVE, bd=1).place(x=100,y=377,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve7,relief=GROOVE, bd=1).place(x=100,y=398,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve8,relief=GROOVE, bd=1).place(x=100,y=419,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve9,relief=GROOVE, bd=1).place(x=100,y=440,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve10,relief=GROOVE, bd=1).place(x=100,y=461,width=100,height=20)
+    valve1rate = IntVar()
+    valve2rate = IntVar()
+    valve3rate = IntVar()
+    valve4rate = IntVar()
+    valve5rate = IntVar()
+    valve6rate = IntVar()
+    valve7rate = IntVar()
+    valve8rate = IntVar()
+    valve9rate = IntVar()
+    valve10rate = IntVar()
+
+    Entry(root1, textvariable=valve1rate,width =10).place(x=200,y=272,width=114,height=20)
+    Entry(root1, textvariable=valve2rate,width =10).place(x=200,y=293,width=114,height=20)
+    Entry(root1, textvariable=valve3rate,width =10).place(x=200,y=314,width=114,height=20)
+    Entry(root1, textvariable=valve4rate,width =10).place(x=200,y=335,width=114,height=20)
+    Entry(root1, textvariable=valve5rate,width =10).place(x=200,y=356,width=114,height=20)
+    Entry(root1, textvariable=valve6rate,width =10).place(x=200,y=377,width=114,height=20)
+    Entry(root1, textvariable=valve7rate,width =10).place(x=200,y=398,width=114,height=20)
+    Entry(root1, textvariable=valve8rate,width =10).place(x=200,y=419,width=114,height=20)
+    Entry(root1, textvariable=valve9rate,width =10).place(x=200,y=440,width=114,height=20)
+    Entry(root1, textvariable=valve10rate,width =10).place(x=200,y=461,width=114,height=20)
+
+
+    valveslabel2=Label(root1,text="VALVES      |    ACTIVATE      | FLOW RATE       \n                                     in (L/Hr)",background='#ffdbff',borderwidth=1,relief=GROOVE,underline=0)
+    valveslabel2.place(x=330,y=240,height=30,width=300)
+
+    Label(root1,text='VALVE 11',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=272,width=85,height=20)
+    Label(root1,text='VALVE 12',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=293,width=85,height=20)
+    Label(root1,text='VALVE 13',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=314,width=85,height=20)
+    Label(root1,text='VALVE 14',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=335,width=85,height=20)
+    Label(root1,text='VALVE 15',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=356,width=85,height=20)
+    Label(root1,text='VALVE 16',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=377,width=85,height=20)
+    Label(root1,text='VALVE 17',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=398,width=85,height=20)
+    Label(root1,text='VALVE 18',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=419,width=85,height=20)
+    Label(root1,text='VALVE 19',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=440,width=85,height=20)
+    Label(root1,text='VALVE 20',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=330,y=461,width=85,height=20)
+
+    checkvalve11=IntVar()
+    checkvalve12=IntVar()
+    checkvalve13=IntVar()
+    checkvalve14=IntVar()
+    checkvalve15=IntVar()
+    checkvalve16=IntVar()
+    checkvalve17=IntVar()
+    checkvalve18=IntVar()
+    checkvalve19=IntVar()
+    checkvalve20=IntVar()
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve11,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=272,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve12,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=293,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve13,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=314,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve14,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=335,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve15,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=356,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve16,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=377,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve17,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=398,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve18,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=419,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve19,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=440,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve20,relief=GROOVE, bd=1,state=DISABLED).place(x=415,y=461,width=100,height=20)
+
+
+    valve11rate = IntVar()
+    valve12rate = IntVar()
+    valve13rate = IntVar()
+    valve14rate = IntVar()
+    valve15rate = IntVar()
+    valve16rate = IntVar()
+    valve17rate = IntVar()
+    valve18rate = IntVar()
+    valve19rate = IntVar()
+    valve20rate = IntVar()
+
+    Entry(root1, textvariable=valve11rate,width =10,state=DISABLED).place(x=515,y=272,width=114,height=20)
+    Entry(root1, textvariable=valve12rate,width =10,state=DISABLED).place(x=515,y=293,width=114,height=20)
+    Entry(root1, textvariable=valve13rate,width =10,state=DISABLED).place(x=515,y=314,width=114,height=20)
+    Entry(root1, textvariable=valve14rate,width =10,state=DISABLED).place(x=515,y=335,width=114,height=20)
+    Entry(root1, textvariable=valve15rate,width =10,state=DISABLED).place(x=515,y=356,width=114,height=20)
+    Entry(root1, textvariable=valve16rate,width =10,state=DISABLED).place(x=515,y=377,width=114,height=20)
+    Entry(root1, textvariable=valve17rate,width =10,state=DISABLED).place(x=515,y=398,width=114,height=20)
+    Entry(root1, textvariable=valve18rate,width =10,state=DISABLED).place(x=515,y=419,width=114,height=20)
+    Entry(root1, textvariable=valve19rate,width =10,state=DISABLED).place(x=515,y=440,width=114,height=20)
+    Entry(root1, textvariable=valve20rate,width =10,state=DISABLED).place(x=515,y=461,width=114,height=20)
+
+
+    valveslabel3=Label(root1,text="VALVES      |    ACTIVATE      | FLOW RATE      \n                                     in (L/Hr)",background='#ffdbff',borderwidth=1,relief=GROOVE,underline=0)
+    valveslabel3.place(x=645,y=240,height=30,width=300)
+    Label(root1,text='VALVE 21',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=272,width=85,height=20)
+    Label(root1,text='VALVE 22',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=293,width=85,height=20)
+    Label(root1,text='VALVE 23',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=314,width=85,height=20)
+    Label(root1,text='VALVE 24',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=335,width=85,height=20)
+    Label(root1,text='VALVE 25',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=356,width=85,height=20)
+    Label(root1,text='VALVE 26',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=377,width=85,height=20)
+    Label(root1,text='VALVE 27',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=398,width=85,height=20)
+    Label(root1,text='VALVE 28',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=419,width=85,height=20)
+    Label(root1,text='VALVE 29',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=440,width=85,height=20)
+    Label(root1,text='VALVE 30',borderwidth=1,relief="raised", background='gray',state=DISABLED).place(x=645,y=461,width=85,height=20)
+    checkvalve21=IntVar()
+    checkvalve22=IntVar()
+    checkvalve23=IntVar()
+    checkvalve24=IntVar()
+    checkvalve25=IntVar()
+    checkvalve26=IntVar()
+    checkvalve27=IntVar()
+    checkvalve28=IntVar()
+    checkvalve29=IntVar()
+    checkvalve30=IntVar()
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve21,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=272,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve22,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=293,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve23,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=314,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve24,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=335,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve25,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=356,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve26,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=377,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve27,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=398,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve28,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=419,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve29,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=440,width=100,height=20)
+    Checkbutton(root1, text="ACTIVATE", variable=checkvalve30,relief=GROOVE, bd=1,state=DISABLED).place(x=730,y=461,width=100,height=20)
+    valve21rate = IntVar()
+    valve22rate = IntVar()
+    valve23rate = IntVar()
+    valve24rate = IntVar()
+    valve25rate = IntVar()
+    valve26rate = IntVar()
+    valve27rate = IntVar()
+    valve28rate = IntVar()
+    valve29rate = IntVar()
+    valve30rate = IntVar()
+
+    Entry(root1, textvariable=valve21rate,width =10,state=DISABLED).place(x=830,y=272,width=114,height=20)
+    Entry(root1, textvariable=valve22rate,width =10,state=DISABLED).place(x=830,y=293,width=114,height=20)
+    Entry(root1, textvariable=valve23rate,width =10,state=DISABLED).place(x=830,y=314,width=114,height=20)
+    Entry(root1, textvariable=valve24rate,width =10,state=DISABLED).place(x=830,y=335,width=114,height=20)
+    Entry(root1, textvariable=valve25rate,width =10,state=DISABLED).place(x=830,y=356,width=114,height=20)
+    Entry(root1, textvariable=valve26rate,width =10,state=DISABLED).place(x=830,y=377,width=114,height=20)
+    Entry(root1, textvariable=valve27rate,width =10,state=DISABLED).place(x=830,y=398,width=114,height=20)
+    Entry(root1, textvariable=valve28rate,width =10,state=DISABLED).place(x=830,y=419,width=114,height=20)
+    Entry(root1, textvariable=valve29rate,width =10,state=DISABLED).place(x=830,y=440,width=114,height=20)
+    Entry(root1, textvariable=valve30rate,width =10,state=DISABLED).place(x=830,y=461,width=114,height=20)
+
+    root1.mainloop()
+
+#MENUBAR
+menubar = Menu(root)
+filemenu = Menu(menubar, tearoff=0)
+filemenu.add_command(label="New", command=donothing)
+filemenu.add_command(label="Open", command=donothing)
+filemenu.add_command(label="Save", command=donothing)
+filemenu.add_command(label="Save as...", command=donothing)
+filemenu.add_command(label="Close", command=donothing)
+
+filemenu.add_separator()
+
+filemenu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=filemenu)
+editmenu = Menu(menubar, tearoff=0)
+editmenu.add_command(label="Undo", command=donothing)
+
+editmenu.add_separator()
+
+editmenu.add_command(label="Cut", command=donothing)
+editmenu.add_command(label="Copy", command=donothing)
+editmenu.add_command(label="Paste", command=donothing)
+editmenu.add_command(label="Delete", command=donothing)
+editmenu.add_command(label="Select All", command=donothing)
+
+menubar.add_cascade(label="Edit", menu=editmenu)
+helpmenu = Menu(menubar, tearoff=0)
+helpmenu.add_command(label="Setting Page", command=settingpagefun)
+helpmenu.add_command(label="About...", command=donothing)
+menubar.add_cascade(label="Help", menu=helpmenu)
+#MENUBAR COMPLETD
+
+
+#SAME SIZRE AS ROOT BUT FOR BACKUP ROOT
+mainwindow=Frame(root,width=1300,height=600,background = '#CEF6F5')
+mainwindow.place(x=0,y=0,width=1300,height=600)
+
+
+#MAIN PROGRAM NAME 
+program_name=StringVar()
+Label(mainwindow,text="PROGRAM NAME",font=( "Times New Roman",15),width=180,height=40,bg="#ECF6CE",relief=RIDGE).place(x=500,y=8,width=180,height=40)
+Entry(mainwindow,textvariable=program_name,font=( "Times New Roman",15),width=10).place(x=670,y=8,width=100,height=40)
+ 
+
+#BOTTOM BUTTONS IN MAIN WINDOW
+
+cleanpbutton=Button(mainwindow,text="CLEAR PROGRAM",command=cleanprogram)
+cleanpbutton.place(x=550,y=550,width=120,height=35)
+loadpbutton=Button(mainwindow,text="LOAD PROGRAM",command=loadprogram)
+loadpbutton.place(x=700,y=550,width=120,height=35)
+
+checkpbutton=Button(mainwindow,text="CHECK PROGRAM",command=checkprogram)
+checkpbutton.place(x=850,y=550,width=120,height=35)
+savepbutton=Button(mainwindow,text="SAVE PROGRAM",command=saveprogram)
+savepbutton.place(x=1000,y=550,width=120,height=35)
+exitbutton=Button(mainwindow,text="EXIT",command=quitfn)
+exitbutton.place(x=1150,y=550,width=120,height=35)
+
+Label(mainwindow,text="SLOT",font=( "Times New Roman",10),bg="GRAY",relief=RIDGE).place(x=22,y=55,width=68,height=30)
+Label(mainwindow,text="     IRRIGATION    ",font=( "Times New Roman",10),bg="GRAY",relief=RIDGE).place(x=90,y=55,width=280,height=30)
+Label(mainwindow,text=" DOSING ",font=( "Times New Roman",10),bg="GRAY",relief=RIDGE).place(x=370,y=55,width=320,height=30)
+Label(mainwindow,text="PRIORITY",font=( "Times New Roman",10),bg="GRAY",relief=RIDGE).place(x=660,y=55,width=90,height=30)
+Label(mainwindow,text="VALVES",font=( "Times New Roman",10),bg="GRAY",relief=RIDGE).place(x=750,y=55,width=420,height=30)
+Label(mainwindow,text="SAVE/LOAD",font=( "Times New Roman",10),bg="GRAY",relief=RIDGE).place(x=1170,y=55,width=106,height=30)
+
+#MAIN FRAME WHERE PROGRAM BUTTON ENTRY N LABEL EXITS
+main=Frame(mainwindow,width=1260,height=455,borderwidth=2,background="#58D3F7",relief=RIDGE)
+main.place(x=20,y=90,width=1260,height=455)
+
+#ALL  SLOT  CODE 
+
+slot1=LabelFrame(main,text="I SLOT",font=( "Times New Roman",10),width=1256,height=90,bg="#ECF6CE",relief=RIDGE)
+slot1.place(x=0,y=0,height=90,width=1256)
+Label(main,text="SLOT1 \n NAME",font=( "Times New Roman",10),bg="#ECF6CE",borderwidth=2,relief=RIDGE).place(x=2,y=20,width=60,height=35) 
+slot1_name=StringVar()
+Entry(main, textvariable=slot1_name,width =5).place(x=2,y=55,width=60,height=30)
+
+
+Label(main,text="MAIN \n START",font=( "Times New Roman",10),bg="#ECF6CE",borderwidth=2,relief=RIDGE).place(x=70,y=12,width=50,height=35) 
+Label(main,text="MAIN \nSTOP",font=( "Times New Roman",10),bg="#ECF6CE",borderwidth=2,relief=RIDGE).place(x=70,y=50,width=50,height=35) 
+
+slot1main_start=StringVar()
+slot1main_stop=StringVar()
+Entry(main, textvariable=slot1main_start,width =5).place(x=120,y=12,width=40,height=35)
+Entry(main, textvariable=slot1main_stop,width =5).place(x=120,y=50,width=40,height=35)
+
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#ECF6CE",relief=FLAT).place(x=160,y=12,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#ECF6CE",relief=FLAT).place(x=160,y=50,width=40,height=35)
+Label(main,text="PRE",font=( "Times New Roman",10),bg="#ECF6CE",borderwidth=2,relief=RIDGE).place(x=210,y=12,width=50,height=35) 
+Label(main,text="POST",font=( "Times New Roman",10),bg="#ECF6CE",borderwidth=2,relief=RIDGE).place(x=210,y=50,width=50,height=35)
+slot1_pre=StringVar()
+slot1_post=StringVar()
+Entry(main, textvariable=slot1_pre,width =5).place(x=260,y=12,width=40,height=35)
+Entry(main, textvariable=slot1_post,width =5).place(x=260,y=50,width=40,height=35)
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#ECF6CE",relief=FLAT).place(x=300,y=12,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#ECF6CE",relief=FLAT).place(x=300,y=50,width=40,height=35)
+ 
+"""venturi"""
+
+slot1_vd1=StringVar()
+slot1_vd2=StringVar()
+slot1_vd3=StringVar()
+slot1_vd1.set("hh:mm")
+slot1_vd2.set("hh:mm")
+slot1_vd3.set("hh:mm")
+
+Label(main, text="DV1",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#ECF6CE").place(x=350,y=12,width=40,height=22)
+Label(main, text="DV2",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#ECF6CE").place(x=450,y=12,width=40,height=22)
+Label(main, text="DV3",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#ECF6CE").place(x=550,y=12,width=40,height=22)
+Entry(main, textvariable=slot1_vd1,width =5).place(x=390,y=12,width=50,height=22)
+Entry(main, textvariable=slot1_vd2,width =5).place(x=490,y=12,width=50,height=22)
+Entry(main, textvariable=slot1_vd3,width =5).place(x=590,y=12,width=50,height=22)
+
+slot1_vd4=StringVar()
+slot1_vd5=StringVar()
+slot1_vd6=StringVar()
+slot1_vd4.set("hh:mm")
+slot1_vd5.set("hh:mm")
+slot1_vd6.set("hh:mm")
+
+Label(main, text="DV4",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#ECF6CE").place(x=350,y=35,width=40,height=22)
+Label(main, text="DV5",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#ECF6CE").place(x=450,y=35,width=40,height=22)
+Label(main, text="DV6",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#ECF6CE").place(x=550,y=35,width=40,height=22)
+Entry(main, textvariable=slot1_vd4,width =5,state=DISABLED).place(x=390,y=35,width=50,height=22)
+Entry(main, textvariable=slot1_vd5,width =5,state=DISABLED).place(x=490,y=35,width=50,height=22)
+Entry(main, textvariable=slot1_vd6,width =5,state=DISABLED).place(x=590,y=35,width=50,height=22)
+
+slot1_vd7=StringVar()
+slot1_vd8=StringVar()
+slot1_vd9=StringVar()
+slot1_vd7.set("hh:mm")
+slot1_vd8.set("hh:mm")
+slot1_vd9.set("hh:mm")
+
+Label(main, text="DV7",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#ECF6CE").place(x=350,y=57,width=40,height=22)
+Label(main, text="DV8",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#ECF6CE").place(x=450,y=57,width=40,height=22)
+Label(main, text="DV9",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#ECF6CE").place(x=550,y=57,width=40,height=22)
+Entry(main, textvariable=slot1_vd7,width =5,state=DISABLED).place(x=390,y=57,width=50,height=22)
+Entry(main, textvariable=slot1_vd8,width =5,state=DISABLED).place(x=490,y=57,width=50,height=22)
+Entry(main, textvariable=slot1_vd9,width =5,state=DISABLED).place(x=590,y=57,width=50,height=22)
+
+
+Label(main, text="PRI.NO",font=( "Times New Roman",8),relief=RIDGE,bd=2,bg="#ECF6CE").place(x=650,y=12,width=70,height=22)
+slot1_priorityno=IntVar()
+Entry(main, textvariable=slot1_priorityno,width =5).place(x=670,y=35,width=30,height=22)
+
+vslot1_1 = IntVar()
+vslot1_2 = IntVar()
+vslot1_3 = IntVar()
+vslot1_4 = IntVar()
+vslot1_5 = IntVar()
+vslot1_6 = IntVar()
+vslot1_7 = IntVar()
+vslot1_8 = IntVar()
+vslot1_9 = IntVar()
+vslot1_10 = IntVar()
+
+vslot1_11 = IntVar()
+vslot1_12 = IntVar()
+vslot1_13 = IntVar()
+vslot1_14= IntVar()
+vslot1_15 = IntVar()
+vslot1_16= IntVar()
+vslot1_17 = IntVar()
+vslot1_18 = IntVar()
+vslot1_19 = IntVar()
+vslot1_20 = IntVar()
+
+
+vslot1_21 = IntVar()
+vslot1_22 = IntVar()
+vslot1_23 = IntVar()
+vslot1_24 = IntVar()
+vslot1_25= IntVar()
+vslot1_26= IntVar()
+vslot1_27 = IntVar()
+vslot1_28 = IntVar()
+vslot1_29 = IntVar()
+vslot1_30 = IntVar()
+
+k1=Checkbutton(main, text="V1",font=( "Times New Roman",10), variable=vslot1_1,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=730,y=12,width=40,height=22)
+Checkbutton(main, text="V2", font=( "Times New Roman",10),variable=vslot1_2,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=770,y=12,width=40,height=22)
+Checkbutton(main, text="V3",font=( "Times New Roman",10), variable=vslot1_3,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=810,y=12,width=40,height=22)
+Checkbutton(main, text="V4",font=( "Times New Roman",10), variable=vslot1_4,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=850,y=12,width=40,height=22)
+Checkbutton(main, text="V5",font=( "Times New Roman",10), variable=vslot1_5,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=890,y=12,width=40,height=22)
+Checkbutton(main, text="V6",font=( "Times New Roman",10), variable=vslot1_6,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=930,y=12,width=40,height=22)
+Checkbutton(main, text="V7",font=( "Times New Roman",10), variable=vslot1_7,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=970,y=12,width=40,height=22)
+Checkbutton(main, text="V8",font=( "Times New Roman",10), variable=vslot1_8,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=1010,y=12,width=40,height=22)
+Checkbutton(main, text="V9",font=( "Times New Roman",10), variable=vslot1_9,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=1050,y=12,width=40,height=22)
+Checkbutton(main, text="10",font=( "Times New Roman",10), variable=vslot1_10,relief=GROOVE, bd=1,bg="#ECF6CE").place(x=1090,y=12,width=40,height=22)
+
+
+Checkbutton(main, text="11",font=( "Times New Roman",10), variable=vslot1_11,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=730,y=35,width=40,height=22)
+Checkbutton(main, text="12",font=( "Times New Roman",10), variable=vslot1_12,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=770,y=35,width=40,height=22)
+Checkbutton(main, text="13",font=( "Times New Roman",10), variable=vslot1_13,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=810,y=35,width=40,height=22)
+Checkbutton(main, text="14",font=( "Times New Roman",10), variable=vslot1_14,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=850,y=35,width=40,height=22)
+Checkbutton(main, text="15",font=( "Times New Roman",10), variable=vslot1_15,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=890,y=35,width=40,height=22)
+Checkbutton(main, text="16",font=( "Times New Roman",10), variable=vslot1_16,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=930,y=35,width=40,height=22)
+Checkbutton(main, text="17",font=( "Times New Roman",10), variable=vslot1_17,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=970,y=35,width=40,height=22)
+Checkbutton(main, text="18",font=( "Times New Roman",10), variable=vslot1_18,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=1010,y=35,width=40,height=22)
+Checkbutton(main, text="19",font=( "Times New Roman",10), variable=vslot1_19,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=1050,y=35,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot1_20,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=1090,y=35,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot1_20,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=1090,y=35,width=40,height=22)
+
+
+Checkbutton(main, text="V21",font=( "Times New Roman",8), variable=vslot1_11,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=730,y=57,width=40,height=22)
+Checkbutton(main, text="V22",font=( "Times New Roman",8), variable=vslot1_12,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=770,y=57,width=40,height=22)
+Checkbutton(main, text="V23",font=( "Times New Roman",8), variable=vslot1_13,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=810,y=57,width=40,height=22)
+Checkbutton(main, text="V24",font=( "Times New Roman",8), variable=vslot1_14,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=850,y=57,width=40,height=22)
+Checkbutton(main, text="V25",font=( "Times New Roman",8), variable=vslot1_15,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=890,y=57,width=40,height=22)
+Checkbutton(main, text="V26",font=( "Times New Roman",8), variable=vslot1_16,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=930,y=57,width=40,height=22)
+Checkbutton(main, text="V27",font=( "Times New Roman",8), variable=vslot1_17,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=970,y=57,width=40,height=22)
+Checkbutton(main, text="V28",font=( "Times New Roman",8), variable=vslot1_18,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=1010,y=57,width=40,height=22)
+Checkbutton(main, text="V29",font=( "Times New Roman",8), variable=vslot1_19,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=1050,y=57,width=40,height=22)
+Checkbutton(main, text="V30", font=( "Times New Roman",8),variable=vslot1_20,relief=GROOVE, bd=1,state=DISABLED,bg="#ECF6CE").place(x=1090,y=57,width=40,height=22)
+
+
+slot1clean_button=Button(main,text="CLEAN SLOT",command=cleanslot1,bg="#ECF6CE")
+slot1clean_button.place(x=1150,y=12,width=100,height=23)
+slot1load_button=Button(main,text="LOAD SLOT",command=loadslot1,bg="#ECF6CE")
+slot1load_button.place(x=1150,y=35,width=100,height=23)
+slot1save_button=Button(main,text="SAVE SLOT",command=saveslot1,bg="#ECF6CE")
+slot1save_button.place(x=1150,y=58,width=100,height=23)
+
+            
+# SLOT 1 CODE FINISHED 
+
+#slot 2 CODE BEGINS
+
+slot2=LabelFrame(main,text="II SLOT",font=( "Times New Roman",10),width=1256,height=90,bg="#FFCFC4",relief=RIDGE)
+slot2.place(x=0,y=90,height=90,width=1256)
+Label(main,text="SLOT2 \n NAME",font=( "Times New Roman",10),bg="#FFCFC4",borderwidth=2,relief=RIDGE).place(x=2,y=110,width=60,height=35) 
+slot2_name=StringVar()
+Entry(main,textvariable=slot2_name,width =5).place(x=2,y=145,width=60,height=30)
+
+
+Label(main,text="MAIN \n START",font=( "Times New Roman",10),bg="#FFCFC4",borderwidth=2,relief=RIDGE).place(x=70,y=102,width=50,height=35) 
+Label(main,text="MAIN \nSTOP",font=( "Times New Roman",10),bg="#FFCFC4",borderwidth=2,relief=RIDGE).place(x=70,y=140,width=50,height=35) 
+
+slot2main_start=StringVar()
+slot2main_stop=StringVar()
+Entry(main, textvariable=slot2main_start,width =5).place(x=120,y=102,width=40,height=35)
+Entry(main, textvariable=slot2main_stop,width =5).place(x=120,y=140,width=40,height=35)
+
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#FFCFC4",relief=FLAT).place(x=160,y=102,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#FFCFC4",relief=FLAT).place(x=160,y=140,width=40,height=35)
+Label(main,text="PRE",font=( "Times New Roman",10),bg="#FFCFC4",borderwidth=2,relief=RIDGE).place(x=210,y=102,width=50,height=35) 
+Label(main,text="POST",font=( "Times New Roman",10),bg="#FFCFC4",borderwidth=2,relief=RIDGE).place(x=210,y=140,width=50,height=35)
+slot2_pre=StringVar()
+slot2_post=StringVar()
+Entry(main, textvariable=slot2_pre,width =5).place(x=260,y=102,width=40,height=35)
+Entry(main, textvariable=slot2_post,width =5).place(x=260,y=140,width=40,height=35)
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#FFCFC4",relief=FLAT).place(x=300,y=102,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#FFCFC4",relief=FLAT).place(x=300,y=140,width=40,height=35)
+ 
+"""venturi"""
+
+slot2_vd1=StringVar()
+slot2_vd2=StringVar()
+slot2_vd3=StringVar()
+slot2_vd1.set("hh:mm")
+slot2_vd2.set("hh:mm")
+slot2_vd3.set("hh:mm")
+
+Label(main, text="DV1",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#FFCFC4").place(x=350,y=102,width=40,height=22)
+Label(main, text="DV2",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#FFCFC4").place(x=450,y=102,width=40,height=22)
+Label(main, text="DV3",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#FFCFC4").place(x=550,y=102,width=40,height=22)
+Entry(main, textvariable=slot2_vd1,width =5).place(x=390,y=102,width=50,height=22)
+Entry(main, textvariable=slot2_vd2,width =5).place(x=490,y=102,width=50,height=22)
+Entry(main, textvariable=slot2_vd3,width =5).place(x=590,y=102,width=50,height=22)
+
+slot2_vd4=StringVar()
+slot2_vd5=StringVar()
+slot2_vd6=StringVar()
+slot2_vd4.set("hh:mm")
+slot2_vd5.set("hh:mm")
+slot2_vd6.set("hh:mm")
+
+Label(main, text="DV4",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#FFCFC4").place(x=350,y=125,width=40,height=22)
+Label(main, text="DV5",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#FFCFC4").place(x=450,y=125,width=40,height=22)
+Label(main, text="DV6",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#FFCFC4").place(x=550,y=125,width=40,height=22)
+Entry(main, textvariable=slot2_vd4,width =5,state=DISABLED).place(x=390,y=125,width=50,height=22)
+Entry(main, textvariable=slot2_vd5,width =5,state=DISABLED).place(x=490,y=125,width=50,height=22)
+Entry(main, textvariable=slot2_vd6,width =5,state=DISABLED).place(x=590,y=125,width=50,height=22)
+
+slot2_vd7=StringVar()
+slot2_vd8=StringVar()
+slot2_vd9=StringVar()
+slot2_vd7.set("hh:mm")
+slot2_vd8.set("hh:mm")
+slot2_vd9.set("hh:mm")
+
+
+Label(main, text="DV7",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#FFCFC4").place(x=350,y=147,width=40,height=22)
+Label(main, text="DV8",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#FFCFC4").place(x=450,y=147,width=40,height=22)
+Label(main, text="DV9",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#FFCFC4").place(x=550,y=147,width=40,height=22)
+Entry(main, textvariable=slot2_vd7,width =5,state=DISABLED).place(x=390,y=147,width=50,height=22)
+Entry(main, textvariable=slot2_vd8,width =5,state=DISABLED).place(x=490,y=147,width=50,height=22)
+Entry(main, textvariable=slot2_vd9,width =5,state=DISABLED).place(x=590,y=147,width=50,height=22)
+
+
+Label(main, text="PRI.NO",font=( "Times New Roman",8),relief=RIDGE,bd=2,bg="#FFCFC4").place(x=650,y=102,width=70,height=22)
+slot2_priorityno=IntVar()
+Entry(main, textvariable=slot2_priorityno,width =5).place(x=670,y=125,width=30,height=22)
+
+vslot2_1 = IntVar()
+vslot2_2 = IntVar()
+vslot2_3 = IntVar()
+vslot2_4 = IntVar()
+vslot2_5 = IntVar()
+vslot2_6 = IntVar()
+vslot2_7 = IntVar()
+vslot2_8 = IntVar()
+vslot2_9 = IntVar()
+vslot2_10 = IntVar()
+
+vslot2_11 = IntVar()
+vslot2_12 = IntVar()
+vslot2_13 = IntVar()
+vslot2_14= IntVar()
+vslot2_15 = IntVar()
+vslot2_16= IntVar()
+vslot2_17 = IntVar()
+vslot2_18 = IntVar()
+vslot2_19 = IntVar()
+vslot2_20 = IntVar()
+
+vslot2_21 = IntVar()
+vslot2_22 = IntVar()
+vslot2_23 = IntVar()
+vslot2_24 = IntVar()
+vslot2_25= IntVar()
+vslot2_26= IntVar()
+vslot2_27 = IntVar()
+vslot2_28 = IntVar()
+vslot2_29 = IntVar()
+vslot2_30 = IntVar()
+
+Checkbutton(main, text="V1",font=( "Times New Roman",10), variable=vslot2_1,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=730,y=102,width=40,height=22)
+Checkbutton(main, text="V2", font=( "Times New Roman",10),variable=vslot2_2,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=770,y=102,width=40,height=22)
+Checkbutton(main, text="V3",font=( "Times New Roman",10), variable=vslot2_3,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=810,y=102,width=40,height=22)
+Checkbutton(main, text="V4",font=( "Times New Roman",10), variable=vslot2_4,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=850,y=102,width=40,height=22)
+Checkbutton(main, text="V5",font=( "Times New Roman",10), variable=vslot2_5,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=890,y=102,width=40,height=22)
+Checkbutton(main, text="V6",font=( "Times New Roman",10), variable=vslot2_6,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=930,y=102,width=40,height=22)
+Checkbutton(main, text="V7",font=( "Times New Roman",10), variable=vslot2_7,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=970,y=102,width=40,height=22)
+Checkbutton(main, text="V8",font=( "Times New Roman",10), variable=vslot2_8,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=1010,y=102,width=40,height=22)
+Checkbutton(main, text="V9",font=( "Times New Roman",10), variable=vslot2_9,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=1050,y=102,width=40,height=22)
+Checkbutton(main, text="10",font=( "Times New Roman",10), variable=vslot2_10,relief=GROOVE, bd=1,bg="#FFCFC4").place(x=1090,y=102,width=40,height=22)
+
+
+Checkbutton(main, text="11",font=( "Times New Roman",10), variable=vslot2_11,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=730,y=125,width=40,height=22)
+Checkbutton(main, text="12",font=( "Times New Roman",10), variable=vslot2_12,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=770,y=125,width=40,height=22)
+Checkbutton(main, text="13",font=( "Times New Roman",10), variable=vslot2_13,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=810,y=125,width=40,height=22)
+Checkbutton(main, text="14",font=( "Times New Roman",10), variable=vslot2_14,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=850,y=125,width=40,height=22)
+Checkbutton(main, text="15",font=( "Times New Roman",10), variable=vslot2_15,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=890,y=125,width=40,height=22)
+Checkbutton(main, text="16",font=( "Times New Roman",10), variable=vslot2_16,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=930,y=125,width=40,height=22)
+Checkbutton(main, text="17",font=( "Times New Roman",10), variable=vslot2_17,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=970,y=125,width=40,height=22)
+Checkbutton(main, text="18",font=( "Times New Roman",10), variable=vslot2_18,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=1010,y=125,width=40,height=22)
+Checkbutton(main, text="19",font=( "Times New Roman",10), variable=vslot2_19,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=1050,y=125,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot2_20,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=1090,y=125,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot2_20,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=1090,y=125,width=40,height=22)
+
+Checkbutton(main, text="V21",font=( "Times New Roman",8), variable=vslot2_11,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=730,y=147,width=40,height=22)
+Checkbutton(main, text="V22",font=( "Times New Roman",8), variable=vslot2_12,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=770,y=147,width=40,height=22)
+Checkbutton(main, text="V23",font=( "Times New Roman",8), variable=vslot2_13,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=810,y=147,width=40,height=22)
+Checkbutton(main, text="V24",font=( "Times New Roman",8), variable=vslot2_14,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=850,y=147,width=40,height=22)
+Checkbutton(main, text="V25",font=( "Times New Roman",8), variable=vslot2_15,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=890,y=147,width=40,height=22)
+Checkbutton(main, text="V26",font=( "Times New Roman",8), variable=vslot2_16,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=930,y=147,width=40,height=22)
+Checkbutton(main, text="V27",font=( "Times New Roman",8), variable=vslot2_17,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=970,y=147,width=40,height=22)
+Checkbutton(main, text="V28",font=( "Times New Roman",8), variable=vslot2_18,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=1010,y=147,width=40,height=22)
+Checkbutton(main, text="V29",font=( "Times New Roman",8), variable=vslot2_19,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=1050,y=147,width=40,height=22)
+Checkbutton(main, text="V30", font=( "Times New Roman",8),variable=vslot2_20,relief=GROOVE, bd=1,state=DISABLED,bg="#FFCFC4").place(x=1090,y=147,width=40,height=22)
+
+slot2clean_button=Button(main,text="CLEAN SLOT",command=cleanslot2,bg="#FFCFC4")
+slot2clean_button.place(x=1150,y=102,width=100,height=23)
+slot2load_button=Button(main,text="LOAD SLOT",command=loadslot2,bg="#FFCFC4")
+slot2load_button.place(x=1150,y=125,width=100,height=23)
+slot2save_button=Button(main,text="SAVE SLOT",command=saveslot2,bg="#FFCFC4")
+slot2save_button.place(x=1150,y=148,width=100,height=23)
+#SLOT 2 CODE ENDS HERE
+
+#SLOT 3 CODE STARTS HERE
+
+slot3=LabelFrame(main,text="III SLOT",font=( "Times New Roman",10),width=1256,height=90,bg="#F8E0E6",relief=RIDGE)
+slot3.place(x=0,y=180,height=90,width=1256)
+Label(main,text="SLOT3 \n NAME",font=( "Times New Roman",10),bg="#F8E0E6",borderwidth=2,relief=RIDGE).place(x=2,y=200,width=60,height=35) 
+slot3_name=StringVar()
+Entry(main,textvariable=slot3_name,width =5).place(x=2,y=235,width=60,height=30)
+Label(main,text="MAIN \n START",font=( "Times New Roman",10),bg="#F8E0E6",borderwidth=2,relief=RIDGE).place(x=70,y=192,width=50,height=35) 
+Label(main,text="MAIN \nSTOP",font=( "Times New Roman",10),bg="#F8E0E6",borderwidth=2,relief=RIDGE).place(x=70,y=230,width=50,height=35) 
+
+slot3main_start=StringVar()
+slot3main_stop=StringVar()
+Entry(main, textvariable=slot3main_start,width =5).place(x=120,y=192,width=40,height=35)
+Entry(main, textvariable=slot3main_stop,width =5).place(x=120,y=230,width=40,height=35)
+
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F8E0E6",relief=FLAT).place(x=160,y=192,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F8E0E6",relief=FLAT).place(x=160,y=230,width=40,height=35)
+Label(main,text="PRE",font=( "Times New Roman",10),bg="#F8E0E6",borderwidth=2,relief=RIDGE).place(x=210,y=192,width=50,height=35) 
+Label(main,text="POST",font=( "Times New Roman",10),bg="#F8E0E6",borderwidth=2,relief=RIDGE).place(x=210,y=230,width=50,height=35)
+slot3_pre=StringVar()
+slot3_post=StringVar()
+Entry(main, textvariable=slot3_pre,width =5).place(x=260,y=192,width=40,height=35)
+Entry(main, textvariable=slot3_post,width =5).place(x=260,y=230,width=40,height=35)
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F8E0E6",relief=FLAT).place(x=300,y=192,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F8E0E6",relief=FLAT).place(x=300,y=230,width=40,height=35)
+ 
+"""venturi"""
+
+slot3_vd1=StringVar()
+slot3_vd2=StringVar()
+slot3_vd3=StringVar()
+slot3_vd1.set("hh:mm")
+slot3_vd2.set("hh:mm")
+slot3_vd3.set("hh:mm")
+
+Label(main, text="DV1",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#F8E0E6").place(x=350,y=192,width=40,height=22)
+Label(main, text="DV2",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#F8E0E6").place(x=450,y=192,width=40,height=22)
+Label(main, text="DV3",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#F8E0E6").place(x=550,y=192,width=40,height=22)
+Entry(main, textvariable=slot3_vd1,width =5).place(x=390,y=192,width=50,height=22)
+Entry(main, textvariable=slot3_vd2,width =5).place(x=490,y=192,width=50,height=22)
+Entry(main, textvariable=slot3_vd3,width =5).place(x=590,y=192,width=50,height=22)
+
+slot3_vd4=StringVar()
+slot3_vd5=StringVar()
+slot3_vd6=StringVar()
+slot3_vd4.set("hh:mm")
+slot3_vd5.set("hh:mm")
+slot3_vd6.set("hh:mm")
+
+Label(main, text="DV4",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F8E0E6").place(x=350,y=215,width=40,height=22)
+Label(main, text="DV5",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F8E0E6").place(x=450,y=215,width=40,height=22)
+Label(main, text="DV6",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F8E0E6").place(x=550,y=215,width=40,height=22)
+Entry(main, textvariable=slot3_vd4,width =5,state=DISABLED).place(x=390,y=215,width=50,height=22)
+Entry(main, textvariable=slot3_vd5,width =5,state=DISABLED).place(x=490,y=215,width=50,height=22)
+Entry(main, textvariable=slot3_vd6,width =5,state=DISABLED).place(x=590,y=215,width=50,height=22)
+
+slot3_vd7=StringVar()
+slot3_vd8=StringVar()
+slot3_vd9=StringVar()
+slot3_vd7.set("hh:mm")
+slot3_vd8.set("hh:mm")
+slot3_vd9.set("hh:mm")
+
+
+Label(main, text="DV7",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F8E0E6").place(x=350,y=237,width=40,height=22)
+Label(main, text="DV8",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F8E0E6").place(x=450,y=237,width=40,height=22)
+Label(main, text="DV9",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F8E0E6").place(x=550,y=237,width=40,height=22)
+Entry(main, textvariable=slot3_vd7,width =5,state=DISABLED).place(x=390,y=237,width=50,height=22)
+Entry(main, textvariable=slot3_vd8,width =5,state=DISABLED).place(x=490,y=237,width=50,height=22)
+Entry(main, textvariable=slot3_vd9,width =5,state=DISABLED).place(x=590,y=237,width=50,height=22)
+Label(main, text="PRI.NO",font=( "Times New Roman",8),relief=RIDGE,bd=2,bg="#F8E0E6").place(x=650,y=192,width=70,height=22)
+slot3_priorityno=IntVar()
+Entry(main, textvariable=slot3_priorityno,width =5).place(x=670,y=215,width=30,height=22)
+
+vslot3_1 = IntVar()
+vslot3_2 = IntVar()
+vslot3_3 = IntVar()
+vslot3_4 = IntVar()
+vslot3_5 = IntVar()
+vslot3_6 = IntVar()
+vslot3_7 = IntVar()
+vslot3_8 = IntVar()
+vslot3_9 = IntVar()
+vslot3_10 = IntVar()
+
+vslot3_11 = IntVar()
+vslot3_12 = IntVar()
+vslot3_13 = IntVar()
+vslot3_14= IntVar()
+vslot3_15 = IntVar()
+vslot3_16= IntVar()
+vslot3_17 = IntVar()
+vslot3_18 = IntVar()
+vslot3_19 = IntVar()
+vslot3_20 = IntVar()
+
+vslot3_21 = IntVar()
+vslot3_22 = IntVar()
+vslot3_23 = IntVar()
+vslot3_24 = IntVar()
+vslot3_25= IntVar()
+vslot3_26= IntVar()
+vslot3_27 = IntVar()
+vslot3_28 = IntVar()
+vslot3_29 = IntVar()
+vslot3_30 = IntVar()
+
+Checkbutton(main, text="V1",font=( "Times New Roman",10), variable=vslot3_1,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=730,y=192,width=40,height=22)
+Checkbutton(main, text="V2", font=( "Times New Roman",10),variable=vslot3_2,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=770,y=192,width=40,height=22)
+Checkbutton(main, text="V3",font=( "Times New Roman",10), variable=vslot3_3,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=810,y=192,width=40,height=22)
+Checkbutton(main, text="V4",font=( "Times New Roman",10), variable=vslot3_4,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=850,y=192,width=40,height=22)
+Checkbutton(main, text="V5",font=( "Times New Roman",10), variable=vslot3_5,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=890,y=192,width=40,height=22)
+Checkbutton(main, text="V6",font=( "Times New Roman",10), variable=vslot3_6,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=930,y=192,width=40,height=22)
+Checkbutton(main, text="V7",font=( "Times New Roman",10), variable=vslot3_7,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=970,y=192,width=40,height=22)
+Checkbutton(main, text="V8",font=( "Times New Roman",10), variable=vslot3_8,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=1010,y=192,width=40,height=22)
+Checkbutton(main, text="V9",font=( "Times New Roman",10), variable=vslot3_9,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=1050,y=192,width=40,height=22)
+Checkbutton(main, text="10",font=( "Times New Roman",10), variable=vslot3_10,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=1090,y=192,width=40,height=22)
+
+
+Checkbutton(main, text="11",font=( "Times New Roman",10), variable=vslot3_11,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=730,y=215,width=40,height=22)
+Checkbutton(main, text="12",font=( "Times New Roman",10), variable=vslot3_12,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=770,y=215,width=40,height=22)
+Checkbutton(main, text="13",font=( "Times New Roman",10), variable=vslot3_13,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=810,y=215,width=40,height=22)
+Checkbutton(main, text="14",font=( "Times New Roman",10), variable=vslot3_14,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=850,y=215,width=40,height=22)
+Checkbutton(main, text="15",font=( "Times New Roman",10), variable=vslot3_15,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=890,y=215,width=40,height=22)
+Checkbutton(main, text="16",font=( "Times New Roman",10), variable=vslot3_16,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=930,y=215,width=40,height=22)
+Checkbutton(main, text="17",font=( "Times New Roman",10), variable=vslot3_17,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=970,y=215,width=40,height=22)
+Checkbutton(main, text="18",font=( "Times New Roman",10), variable=vslot3_18,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1010,y=215,width=40,height=22)
+Checkbutton(main, text="19",font=( "Times New Roman",10), variable=vslot3_19,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1050,y=215,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot3_20,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1090,y=215,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot3_20,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1090,y=215,width=40,height=22)
+
+
+Checkbutton(main, text="V21",font=( "Times New Roman",8), variable=vslot3_21,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=730,y=237,width=40,height=22)
+Checkbutton(main, text="V22",font=( "Times New Roman",8), variable=vslot3_22,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=770,y=237,width=40,height=22)
+Checkbutton(main, text="V23",font=( "Times New Roman",8), variable=vslot3_23,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=810,y=237,width=40,height=22)
+Checkbutton(main, text="V24",font=( "Times New Roman",8), variable=vslot3_24,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=850,y=237,width=40,height=22)
+Checkbutton(main, text="V25",font=( "Times New Roman",8), variable=vslot3_25,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=890,y=237,width=40,height=22)
+Checkbutton(main, text="V26",font=( "Times New Roman",8), variable=vslot3_26,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=930,y=237,width=40,height=22)
+Checkbutton(main, text="V27",font=( "Times New Roman",8), variable=vslot3_27,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=970,y=237,width=40,height=22)
+Checkbutton(main, text="V28",font=( "Times New Roman",8), variable=vslot3_28,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1010,y=237,width=40,height=22)
+Checkbutton(main, text="V29",font=( "Times New Roman",8), variable=vslot3_29,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1050,y=237,width=40,height=22)
+Checkbutton(main, text="V30", font=( "Times New Roman",8),variable=vslot3_30,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1090,y=237,width=40,height=22)
+
+slot3clean_button=Button(main,text="CLEAN SLOT",command=cleanslot3,bg="#F8E0E6")
+slot3clean_button.place(x=1150,y=192,width=100,height=23)
+slot3load_button=Button(main,text="LOAD SLOT",command=loadslot3,bg="#F8E0E6")
+slot3load_button.place(x=1150,y=215,width=100,height=23)
+slot3save_button=Button(main,text="SAVE SLOT",command=saveslot3,bg="#F8E0E6")
+slot3save_button.place(x=1150,y=238,width=100,height=23)
+
+#SLOT 3 CODE ENDS HERE
+
+#SLOT 4 CODE STARTS HERE
+slot4=LabelFrame(main,text="IV SLOT",font=( "Times New Roman",10),width=1256,height=90,bg="#F2F5A9",relief=RIDGE)
+slot4.place(x=0,y=270,height=90,width=1256)
+Label(main,text="SLOT4 \n NAME",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=2,y=290,width=60,height=35) 
+slot4_name=StringVar()
+Entry(main,textvariable=slot4_name,width =5).place(x=2,y=325,width=60,height=30)
+Label(main,text="MAIN \n START",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=70,y=282,width=50,height=35) 
+Label(main,text="MAIN \nSTOP",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=70,y=320,width=50,height=35) 
+
+slot4main_start=StringVar()
+slot4main_stop=StringVar()
+Entry(main, textvariable=slot4main_start,width =5).place(x=120,y=282,width=40,height=35)
+Entry(main, textvariable=slot4main_stop,width =5).place(x=120,y=320,width=40,height=35)
+
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F2F5A9",relief=FLAT).place(x=160,y=282,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F2F5A9",relief=FLAT).place(x=160,y=320,width=40,height=35)
+Label(main,text="PRE",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=210,y=282,width=50,height=35) 
+Label(main,text="POST",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=210,y=320,width=50,height=35)
+slot4_pre=StringVar()
+slot4_post=StringVar()
+Entry(main, textvariable=slot4_pre,width =5).place(x=260,y=282,width=40,height=35)
+Entry(main, textvariable=slot4_post,width =5).place(x=260,y=320,width=40,height=35)
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F2F5A9",relief=FLAT).place(x=300,y=282,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F2F5A9",relief=FLAT).place(x=300,y=320,width=40,height=35)
+"""venturi"""
+slot4_vd1=StringVar()
+slot4_vd2=StringVar()
+slot4_vd3=StringVar()
+slot4_vd1.set("hh:mm")
+slot4_vd2.set("hh:mm")
+slot4_vd3.set("hh:mm")
+
+Label(main, text="DV1",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#F2F5A9").place(x=350,y=282,width=40,height=22)
+Label(main, text="DV2",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#F2F5A9").place(x=450,y=282,width=40,height=22)
+Label(main, text="DV3",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#F2F5A9").place(x=550,y=282,width=40,height=22)
+Entry(main, textvariable=slot4_vd1,width =5).place(x=390,y=282,width=50,height=22)
+Entry(main, textvariable=slot4_vd2,width =5).place(x=490,y=282,width=50,height=22)
+Entry(main, textvariable=slot4_vd3,width =5).place(x=590,y=282,width=50,height=22)
+
+slot4_vd4=StringVar()
+slot4_vd5=StringVar()
+slot4_vd6=StringVar()
+slot4_vd4.set("hh:mm")
+slot4_vd5.set("hh:mm")
+slot4_vd6.set("hh:mm")
+Label(main, text="DV4",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=350,y=305,width=40,height=22)
+Label(main, text="DV5",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=450,y=305,width=40,height=22)
+Label(main, text="DV6",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=550,y=305,width=40,height=22)
+Entry(main, textvariable=slot4_vd4,width =5,state=DISABLED).place(x=390,y=305,width=50,height=22)
+Entry(main, textvariable=slot4_vd5,width =5,state=DISABLED).place(x=490,y=305,width=50,height=22)
+Entry(main, textvariable=slot4_vd6,width =5,state=DISABLED).place(x=590,y=305,width=50,height=22)
+slot4_vd7=StringVar()
+slot4_vd8=StringVar()
+slot4_vd9=StringVar()
+slot4_vd7.set("hh:mm")
+slot4_vd8.set("hh:mm")
+slot4_vd9.set("hh:mm")
+Label(main, text="DV7",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=350,y=327,width=40,height=22)
+Label(main, text="DV8",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=450,y=327,width=40,height=22)
+Label(main, text="DV9",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=550,y=327,width=40,height=22)
+Entry(main, textvariable=slot4_vd7,width =5,state=DISABLED).place(x=390,y=327,width=50,height=22)
+Entry(main, textvariable=slot4_vd8,width =5,state=DISABLED).place(x=490,y=327,width=50,height=22)
+Entry(main, textvariable=slot4_vd9,width =5,state=DISABLED).place(x=590,y=327,width=50,height=22)
+Label(main, text="PRI.NO",font=( "Times New Roman",8),relief=RIDGE,bd=2,bg="#F8E0E6").place(x=650,y=192,width=70,height=22)
+slot4_priorityno=IntVar()
+Entry(main, textvariable=slot4_priorityno,width =5).place(x=670,y=305,width=30,height=22)
+
+vslot4_1 = IntVar()
+vslot4_2 = IntVar()
+vslot4_3 = IntVar()
+vslot4_4 = IntVar()
+vslot4_5 = IntVar()
+vslot4_6 = IntVar()
+vslot4_7 = IntVar()
+vslot4_8 = IntVar()
+vslot4_9 = IntVar()
+vslot4_10 = IntVar()
+
+vslot4_11 = IntVar()
+vslot4_12 = IntVar()
+vslot4_13 = IntVar()
+vslot4_14= IntVar()
+vslot4_15 = IntVar()
+vslot4_16= IntVar()
+vslot4_17 = IntVar()
+vslot4_18 = IntVar()
+vslot4_19 = IntVar()
+vslot4_20 = IntVar()
+
+vslot4_21 = IntVar()
+vslot4_22 = IntVar()
+vslot4_23 = IntVar()
+vslot4_24 = IntVar()
+vslot4_25= IntVar()
+vslot4_26= IntVar()
+vslot4_27 = IntVar()
+vslot4_28 = IntVar()
+vslot4_29 = IntVar()
+vslot4_30 = IntVar()
+
+Checkbutton(main, text="V1",font=( "Times New Roman",10), variable=vslot4_1,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=730,y=282,width=40,height=22)
+Checkbutton(main, text="V2", font=( "Times New Roman",10),variable=vslot4_2,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=770,y=282,width=40,height=22)
+Checkbutton(main, text="V3",font=( "Times New Roman",10), variable=vslot4_3,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=810,y=282,width=40,height=22)
+Checkbutton(main, text="V4",font=( "Times New Roman",10), variable=vslot4_4,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=850,y=282,width=40,height=22)
+Checkbutton(main, text="V5",font=( "Times New Roman",10), variable=vslot4_5,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=890,y=282,width=40,height=22)
+Checkbutton(main, text="V6",font=( "Times New Roman",10), variable=vslot4_6,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=930,y=282,width=40,height=22)
+Checkbutton(main, text="V7",font=( "Times New Roman",10), variable=vslot4_7,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=970,y=282,width=40,height=22)
+Checkbutton(main, text="V8",font=( "Times New Roman",10), variable=vslot4_8,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=1010,y=282,width=40,height=22)
+Checkbutton(main, text="V9",font=( "Times New Roman",10), variable=vslot4_9,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=1050,y=282,width=40,height=22)
+Checkbutton(main, text="10",font=( "Times New Roman",10), variable=vslot4_10,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=1090,y=282,width=40,height=22)
+
+
+Checkbutton(main, text="11",font=( "Times New Roman",10), variable=vslot4_11,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=730,y=305,width=40,height=22)
+Checkbutton(main, text="12",font=( "Times New Roman",10), variable=vslot4_12,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=770,y=305,width=40,height=22)
+Checkbutton(main, text="13",font=( "Times New Roman",10), variable=vslot4_13,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=810,y=305,width=40,height=22)
+Checkbutton(main, text="14",font=( "Times New Roman",10), variable=vslot4_14,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=850,y=305,width=40,height=22)
+Checkbutton(main, text="15",font=( "Times New Roman",10), variable=vslot4_15,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=890,y=305,width=40,height=22)
+Checkbutton(main, text="16",font=( "Times New Roman",10), variable=vslot4_16,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=930,y=305,width=40,height=22)
+Checkbutton(main, text="17",font=( "Times New Roman",10), variable=vslot4_17,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=970,y=305,width=40,height=22)
+Checkbutton(main, text="18",font=( "Times New Roman",10), variable=vslot4_18,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1010,y=305,width=40,height=22)
+Checkbutton(main, text="19",font=( "Times New Roman",10), variable=vslot4_19,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1050,y=305,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot4_20,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1090,y=305,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot4_20,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1090,y=305,width=40,height=22)
+
+
+Checkbutton(main, text="V21",font=( "Times New Roman",8), variable=vslot4_21,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=730,y=327,width=40,height=22)
+Checkbutton(main, text="V22",font=( "Times New Roman",8), variable=vslot4_22,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=770,y=327,width=40,height=22)
+Checkbutton(main, text="V23",font=( "Times New Roman",8), variable=vslot4_23,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=810,y=327,width=40,height=22)
+Checkbutton(main, text="V24",font=( "Times New Roman",8), variable=vslot4_24,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=850,y=327,width=40,height=22)
+Checkbutton(main, text="V25",font=( "Times New Roman",8), variable=vslot4_25,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=890,y=327,width=40,height=22)
+Checkbutton(main, text="V26",font=( "Times New Roman",8), variable=vslot4_26,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=930,y=327,width=40,height=22)
+Checkbutton(main, text="V27",font=( "Times New Roman",8), variable=vslot4_27,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=970,y=327,width=40,height=22)
+Checkbutton(main, text="V28",font=( "Times New Roman",8), variable=vslot4_28,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1010,y=327,width=40,height=22)
+Checkbutton(main, text="V29",font=( "Times New Roman",8), variable=vslot4_29,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1050,y=327,width=40,height=22)
+Checkbutton(main, text="V30", font=( "Times New Roman",8),variable=vslot4_30,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1090,y=327,width=40,height=22)
+
+slot4clean_button=Button(main,text="CLEAN SLOT",command=cleanslot4,bg="#F8E0E6")
+slot4clean_button.place(x=1150,y=282,width=100,height=23)
+slot4load_button=Button(main,text="LOAD SLOT",command=loadslot4,bg="#F8E0E6")
+slot4load_button.place(x=1150,y=305,width=100,height=23)
+slot4save_button=Button(main,text="SAVE SLOT",command=saveslot4,bg="#F8E0E6")
+slot4save_button.place(x=1150,y=327,width=100,height=23)
+# slot 4 code ends here
+
+#slot 5 code begind here
+slot5=LabelFrame(main,text="V SLOT",font=( "Times New Roman",10),width=1256,height=90,bg="#F2F5A9",relief=RIDGE)
+slot5.place(x=0,y=360,height=90,width=1256)
+Label(main,text="SLOT4 \n NAME",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=2,y=390,width=60,height=35) 
+slot5_name=StringVar()
+Entry(main,textvariable=slot5_name,width =5).place(x=2,y=325,width=60,height=30)
+Label(main,text="MAIN \n START",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=70,y=372,width=50,height=35) 
+Label(main,text="MAIN \nSTOP",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=70,y=410,width=50,height=35) 
+
+slot5main_start=StringVar()
+slot5main_stop=StringVar()
+Entry(main, textvariable=slot5main_start,width =5).place(x=120,y=372,width=40,height=35)
+Entry(main, textvariable=slot5main_stop,width =5).place(x=120,y=410,width=40,height=35)
+
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F2F5A9",relief=FLAT).place(x=160,y=372,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F2F5A9",relief=FLAT).place(x=160,y=410,width=40,height=35)
+Label(main,text="PRE",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=210,y=372,width=50,height=35) 
+Label(main,text="POST",font=( "Times New Roman",10),bg="#F2F5A9",borderwidth=2,relief=RIDGE).place(x=210,y=410,width=50,height=35)
+slot5_pre=StringVar()
+slot5_post=StringVar()
+Entry(main, textvariable=slot5_pre,width =5).place(x=260,y=372,width=40,height=35)
+Entry(main, textvariable=slot5_post,width =5).place(x=260,y=410,width=40,height=35)
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F2F5A9",relief=FLAT).place(x=300,y=372,width=40,height=35) 
+Label(main,text="hh:mm",font=( "Times New Roman",10),bg="#F2F5A9",relief=FLAT).place(x=300,y=410,width=40,height=35)
+"""venturi"""
+slot5_vd1=StringVar()
+slot5_vd2=StringVar()
+slot5_vd3=StringVar()
+slot5_vd1.set("hh:mm")
+slot5_vd2.set("hh:mm")
+slot5_vd3.set("hh:mm")
+
+Label(main, text="DV1",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#F2F5A9").place(x=350,y=372,width=40,height=22)
+Label(main, text="DV2",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#F2F5A9").place(x=450,y=372,width=40,height=22)
+Label(main, text="DV3",font=( "Times New Roman",10),relief=GROOVE,bd=2,bg="#F2F5A9").place(x=550,y=372,width=40,height=22)
+Entry(main, textvariable=slot5_vd1,width =5).place(x=390,y=372,width=50,height=22)
+Entry(main, textvariable=slot5_vd2,width =5).place(x=490,y=372,width=50,height=22)
+Entry(main, textvariable=slot5_vd3,width =5).place(x=590,y=372,width=50,height=22)
+
+slot5_vd4=StringVar()
+slot5_vd5=StringVar()
+slot5_vd6=StringVar()
+slot5_vd4.set("hh:mm")
+slot5_vd5.set("hh:mm")
+slot5_vd6.set("hh:mm")
+Label(main, text="DV4",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=350,y=395,width=40,height=22)
+Label(main, text="DV5",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=450,y=395,width=40,height=22)
+Label(main, text="DV6",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=550,y=395,width=40,height=22)
+Entry(main, textvariable=slot5_vd4,width =5,state=DISABLED).place(x=390,y=395,width=50,height=22)
+Entry(main, textvariable=slot5_vd5,width =5,state=DISABLED).place(x=490,y=395,width=50,height=22)
+Entry(main, textvariable=slot5_vd6,width =5,state=DISABLED).place(x=590,y=395,width=50,height=22)
+slot5_vd7=StringVar()
+slot5_vd8=StringVar()
+slot5_vd9=StringVar()
+slot5_vd7.set("hh:mm")
+slot5_vd8.set("hh:mm")
+slot5_vd9.set("hh:mm")
+Label(main, text="DV7",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=350,y=417,width=40,height=22)
+Label(main, text="DV8",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=450,y=417,width=40,height=22)
+Label(main, text="DV9",font=( "Times New Roman",10),relief=GROOVE,bd=2,state=DISABLED,bg="#F2F5A9").place(x=550,y=417,width=40,height=22)
+Entry(main, textvariable=slot5_vd7,width =5,state=DISABLED).place(x=390,y=417,width=50,height=22)
+Entry(main, textvariable=slot5_vd8,width =5,state=DISABLED).place(x=490,y=417,width=50,height=22)
+Entry(main, textvariable=slot5_vd9,width =5,state=DISABLED).place(x=590,y=417,width=50,height=22)
+Label(main, text="PRI.NO",font=( "Times New Roman",8),relief=RIDGE,bd=2,bg="#F8E0E6").place(x=650,y=192,width=70,height=22)
+slot5_priorityno=IntVar()
+Entry(main, textvariable=slot5_priorityno,width =5).place(x=670,y=395,width=30,height=22)
+
+vslot5_1 = IntVar()
+vslot5_2 = IntVar()
+vslot5_3 = IntVar()
+vslot5_4 = IntVar()
+vslot5_5 = IntVar()
+vslot5_6 = IntVar()
+vslot5_7 = IntVar()
+vslot5_8 = IntVar()
+vslot5_9 = IntVar()
+vslot5_10 = IntVar()
+
+vslot5_11 = IntVar()
+vslot5_12 = IntVar()
+vslot5_13 = IntVar()
+vslot5_14= IntVar()
+vslot5_15 = IntVar()
+vslot5_16= IntVar()
+vslot5_17 = IntVar()
+vslot5_18 = IntVar()
+vslot5_19 = IntVar()
+vslot5_20 = IntVar()
+
+vslot5_21 = IntVar()
+vslot5_22 = IntVar()
+vslot5_23 = IntVar()
+vslot5_24 = IntVar()
+vslot5_25= IntVar()
+vslot5_26= IntVar()
+vslot5_27 = IntVar()
+vslot5_28 = IntVar()
+vslot5_29 = IntVar()
+vslot5_30 = IntVar()
+
+Checkbutton(main, text="V1",font=( "Times New Roman",10), variable=vslot5_1,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=730,y=372,width=40,height=22)
+Checkbutton(main, text="V2", font=( "Times New Roman",10),variable=vslot5_2,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=770,y=372,width=40,height=22)
+Checkbutton(main, text="V3",font=( "Times New Roman",10), variable=vslot5_3,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=810,y=372,width=40,height=22)
+Checkbutton(main, text="V4",font=( "Times New Roman",10), variable=vslot5_4,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=850,y=372,width=40,height=22)
+Checkbutton(main, text="V5",font=( "Times New Roman",10), variable=vslot5_5,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=890,y=372,width=40,height=22)
+Checkbutton(main, text="V6",font=( "Times New Roman",10), variable=vslot5_6,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=930,y=372,width=40,height=22)
+Checkbutton(main, text="V7",font=( "Times New Roman",10), variable=vslot5_7,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=970,y=372,width=40,height=22)
+Checkbutton(main, text="V8",font=( "Times New Roman",10), variable=vslot5_8,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=1010,y=372,width=40,height=22)
+Checkbutton(main, text="V9",font=( "Times New Roman",10), variable=vslot5_9,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=1050,y=372,width=40,height=22)
+Checkbutton(main, text="10",font=( "Times New Roman",10), variable=vslot5_10,relief=GROOVE, bd=1,bg="#F8E0E6").place(x=1090,y=372,width=40,height=22)
+
+
+Checkbutton(main, text="11",font=( "Times New Roman",10), variable=vslot5_11,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=730,y=395,width=40,height=22)
+Checkbutton(main, text="12",font=( "Times New Roman",10), variable=vslot5_12,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=770,y=395,width=40,height=22)
+Checkbutton(main, text="13",font=( "Times New Roman",10), variable=vslot5_13,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=810,y=395,width=40,height=22)
+Checkbutton(main, text="14",font=( "Times New Roman",10), variable=vslot5_14,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=850,y=395,width=40,height=22)
+Checkbutton(main, text="15",font=( "Times New Roman",10), variable=vslot5_15,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=890,y=395,width=40,height=22)
+Checkbutton(main, text="16",font=( "Times New Roman",10), variable=vslot5_16,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=930,y=395,width=40,height=22)
+Checkbutton(main, text="17",font=( "Times New Roman",10), variable=vslot5_17,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=970,y=395,width=40,height=22)
+Checkbutton(main, text="18",font=( "Times New Roman",10), variable=vslot5_18,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1010,y=395,width=40,height=22)
+Checkbutton(main, text="19",font=( "Times New Roman",10), variable=vslot5_19,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1050,y=395,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot5_20,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1090,y=395,width=40,height=22)
+Checkbutton(main, text="20", font=( "Times New Roman",10),variable=vslot5_20,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1090,y=395,width=40,height=22)
+
+
+Checkbutton(main, text="V21",font=( "Times New Roman",8), variable=vslot5_21,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=730,y=417,width=40,height=22)
+Checkbutton(main, text="V22",font=( "Times New Roman",8), variable=vslot5_22,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=770,y=417,width=40,height=22)
+Checkbutton(main, text="V23",font=( "Times New Roman",8), variable=vslot5_23,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=810,y=417,width=40,height=22)
+Checkbutton(main, text="V24",font=( "Times New Roman",8), variable=vslot5_24,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=850,y=417,width=40,height=22)
+Checkbutton(main, text="V25",font=( "Times New Roman",8), variable=vslot5_25,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=890,y=417,width=40,height=22)
+Checkbutton(main, text="V26",font=( "Times New Roman",8), variable=vslot5_26,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=930,y=417,width=40,height=22)
+Checkbutton(main, text="V27",font=( "Times New Roman",8), variable=vslot5_27,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=970,y=417,width=40,height=22)
+Checkbutton(main, text="V28",font=( "Times New Roman",8), variable=vslot5_28,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1010,y=417,width=40,height=22)
+Checkbutton(main, text="V29",font=( "Times New Roman",8), variable=vslot5_29,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1050,y=417,width=40,height=22)
+Checkbutton(main, text="V30", font=( "Times New Roman",8),variable=vslot5_30,relief=GROOVE, bd=1,state=DISABLED,bg="#F8E0E6").place(x=1090,y=417,width=40,height=22)
+
+slot5clean_button=Button(main,text="CLEAN SLOT",command=cleanslot5,bg="#F8E0E6")
+slot5clean_button.place(x=1150,y=372,width=100,height=23)
+slot5load_button=Button(main,text="LOAD SLOT",command=loadslot5,bg="#F8E0E6")
+slot5load_button.place(x=1150,y=395,width=100,height=23)
+slot5save_button=Button(main,text="SAVE SLOT",command=saveslot5,bg="#F8E0E6")
+slot5save_button.place(x=1150,y=417,width=100,height=23)
+
+root.mainloop()
